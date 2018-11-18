@@ -3,7 +3,7 @@ module.exports = {
 	index: function (req,res,next) {
         res.send('hola mundo');
         const postgre = require('pg');
-        var config=require('.././database/config');
+        var config=require('server/database/config');
         var db= new postgre.Client(config);
         db.connect();
         db.query('SELECT * FROM datoscuenta')
@@ -24,7 +24,7 @@ module.exports = {
     pruebaInsertar: function (req,res,next){
         res.send('creando un nuevo usuario');
         const postgre = require('pg');
-        var config=require('.././database/config');
+        var config=require('server/database/config');
         var db= new postgre.Client(config);
         db.connect();
 
