@@ -15,7 +15,7 @@ module.exports = {
         var salt = bcrypt.genSaltSync(10);
         var password = bcrypt.hashSync(req.body.contraseniaRegistro, salt);
         
-        var config=require('.././database/config');
+        var config=require('server/database/config');
         var db= new postgre.Client(config);
         db.connect();
         
