@@ -5,8 +5,17 @@ var controllers = require('.././controllers');
 //var AuthMiddleware = require('.././middleware/auth');
 
 
-router.get('/',controllers.HomeController.index);
+router.get('/muestra',controllers.HomeController.index);
 router.get('/prueba',controllers.HomeController.pruebaInsertar);
+//router.get('/signup',controllers.UserController.getSignUp);
+
+router.post('/#signup',controllers.UserController.postSignUp);
+router.post('/',passport.authenticate('local',{
+	successRedirect : '/usuario',
+	failureRedirect : '/'
+}));
+
+
 //rutas de usuario
 /*router.get('/auth/signup',controllers.UserController.getSignUp);
 router.post('/auth/signup',controllers.UserController.postSignUp);

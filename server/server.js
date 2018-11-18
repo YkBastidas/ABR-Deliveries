@@ -10,21 +10,24 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 //const cors = require('cors'); //Permite el cors
 //const helmet = require('helmet'); //escribe los headers de las requests
 //const compression = require('compression');
-const publicPath = path.join(__dirname, '..', 'client/public');
+const publicPath = path.join(__dirname, '..', 'client');
 //const keys = require('./config/keys'); //accede a la informacion sensible
 const PORT = process.env.PORT || 5432; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true})); 
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static(path.join(publicPath))); //une server y cliente
-app.use(bodyParser.json()); 
-app.use(morgan('dev')); 
-app.use(cookieParser()); 
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+app.use(cookieParser());
 //app.use(cors()); 
 //app.use(helmet()); 
 //app.use(compression());
+
 
 
 
@@ -34,20 +37,25 @@ app.use(cookieParser());
 /*app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000,
   keys: [keys.cookieKey]
-}));
+}));*/
 app.use(passport.initialize());
-app.use(passport.session());*/
-//require('./middleware/passport/passport.js')(passport);
+app.use(passport.session());
+require('../middleware/passport.js')(passport);
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicPath, 'paginaPrincipal.html'));
+});
+
+app.get('/usuario', (req, res) => {
+  res.sendFile(path.join(publicPath, 'paginaUsuario.html'));
+});
 
 // Usa las rutas
 app.use('/', router);
 
-// Redirige rutas a index.html
-/*app.get('*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
-});*/
 
-//Error 404
+
+//Error 404 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", true);
@@ -62,9 +70,8 @@ app.use((req, res, next) => {
 app.listen(PORT, (err) => {
   if (err) {
     console.log('Hubo un error conectando el servidor', err);
-  }
-  else { 
-    console.log('Usted se ha conectado en el puerto: ', PORT); 
+  } else {
+    console.log('Usted se ha conectado en el puerto: ', PORT);
   }
 });
 
