@@ -8,7 +8,7 @@
     <meta name="description" content="Sistema de entrega y recolección de paquetes en todo el territorio de la República Bolivariana de Venezuela, servicio express, seguro y eficiente con los mejores precios, en dólares y en bolívares soberanos, contamos con diversas oficinas por toda Venezuela, atención al cliente y servicio 24/7, contamos con servicio directo al hogar en toda el área metropolitana de la Gran Caracas, contamos con el personal más cualificado del sector y siempre innovamos nuestros servicios para brindar la mayor calidad, siempre al frente de las nuevas tecnologías, tenemos una reputación intachable con miles de clientes satisfechos por toda Venezuela."/>
     <meta name="keywords" content="recolecion,entrega,registro, paquetes, express"/>
     <!-- Favicon -->
-    <!--link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico--">
+    <!--link rel="shortcut icon" type="image/x-icon" href="imagenes/favicon.ico"-->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Estilos CSS y Fuentes -->
@@ -82,7 +82,7 @@
             <div id="registro" style='display:none'>
                 <h3>Registrarse <span id="o"> o </span> <a href="#signin" onclick="mostrarInicio()">
                    Iniciar Sesión</a></h3>
-               <form method="post" onsubmit="return validar();" class="needs-validation" id="formRegistro" action="http://localhost:5432/#signup">
+               <form method ="post" onsubmit="return validar();" class="needs-validation" id="formRegistro" action="http://localhost:5432/#signup">
                   <div class="form-group">
                      <div class="input-group">
                         <label class="sr-only" for="correoRegistro">Correo electrónico:</label>
@@ -92,11 +92,11 @@
                   </div>
                   <div class="form-group">
                      <label class="sr-only" for="nombre">Nombre(s):</label>
-                     <input class="form-control" id="nombre" type="text"  maxlength="30" placeholder="Nombre(s)" pattern="[a-zA-Z]*" name="nombre" required>
+                     <input class="form-control" id="nombre" type="text"  maxlength="30" placeholder="Nombre(s)" pattern="[a-zA-Z_].*" name="nombre" required>
                   </div>
                   <div class="form-group">
                      <label class="sr-only" for="apellidos">Apellidos:</label>
-                     <input class="form-control" id="apellidos" type="text" maxlength="30" placeholder="Apellido(s)" pattern="[a-zA-Z]*" name="apellidos" required>
+                     <input class="form-control" id="apellidos" type="text" maxlength="30" placeholder="Apellido(s)" pattern="[a-zA-Z_].*" name="apellidos" required>
                   </div>
                   <div class="form-group">
                      <label class="sr-only" for="fechaNacimiento">Fecha de nacimiento:</label>
@@ -108,7 +108,7 @@
                      <small id="passwordHelpBlock" class="form-text text-muted"> <b>Tu contraseña debe tener entre 8-20 caracteres, contener por lo menos una letra mayúscula y una minúscula y tener por lo menos 1 caracter especial. </b> </small>
                   </div>
                   <!-- falta enviar los datos al servidor para registrar al usuario-->
-     			   <button class="btn btn-primary" type="submit">Registrar</button>
+     			   <button class="btn btn-primary" type="submit" onclick="boton(event)">Registrar</button>
                  <input class="btn btn-warning" type="reset" value="Restaurar">
      		     </form>
              </div>
@@ -129,7 +129,7 @@
                      <input class="form-control" id="contraseniaInicio" type="password" placeholder="Contraseña" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,20}" name="contraseniaInicio" required>
                   </div>
                   <!-- falta recoger los datos del servidor y enviarlo a la página de usuarios después de confirmar la data -->
-     			   <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
+     			   <button class="btn btn-primary" type="submit" onclick="boton(event)">Iniciar Sesión</button>
      		     </form>
              </div>
          </div>
