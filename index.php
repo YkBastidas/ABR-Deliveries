@@ -1,1 +1,1 @@
-<?php include_once("/client/paginaPrincipal.html"); ?>  
+<?php include_once("client/paginaPrincipal.html"); ?>  
