@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 const publicPath = path.join(__dirname, '..', 'client');
 //const keys = require('./config/keys'); //accede a la informacion sensible
 const PORT = process.env.PORT || 5432; // numero del puerto a escuchar
-const router = require('./routes/routes.js'); // conecta las rutas
+const router = require('server/routes/routes.js'); // conecta las rutas
 
 const app = express();
 
@@ -40,14 +40,14 @@ app.use(cookieParser());
 }));*/
 app.use(passport.initialize());
 app.use(passport.session());
-require('../middleware/passport.js')(passport);
+require('middleware/passport.js')(passport);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'paginaPrincipal.html'));
+  res.sendFile(path.join(publicPath, 'client/paginaPrincipal.html'));
 });
 
 app.get('/usuario', (req, res) => {
-  res.sendFile(path.join(publicPath, 'paginaUsuario.html'));
+  res.sendFile(path.join(publicPath, 'client/paginaUsuario.html'));
 });
 
 // Usa las rutas
