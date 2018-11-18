@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport= require('passport');
-var controllers = require('.././controllers');
+var controllers = require('server/controllers');
 //var AuthMiddleware = require('.././middleware/auth');
 
 
