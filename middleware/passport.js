@@ -16,7 +16,7 @@ module.exports = function (passport) {
 		passReqToCallback: true
 	}, function(req,email,password,done){
 
-        var config=require('.././database/config');
+        var config=require('server/database/config');
         
 	
         const pool = postgre.Pool(config);
