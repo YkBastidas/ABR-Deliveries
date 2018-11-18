@@ -52,4 +52,8 @@ function calcularEdad(fecha) {
     }
  return edad;
 }
+
+function boton(event){
+	event.preventDefault;
+}
 //<>
