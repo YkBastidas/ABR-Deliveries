@@ -1,49 +1,12 @@
-body{
-   font-family: 'KoHo', sans-serif;
-}
-
 header{
    background: #30465c;
    color: #fff;
 }
-.main{
-   background: #6da7de;
-}
 
-.sideLeft{
-   background: #de6d6d;
-   color: #fff;
-}
-.sideRight{
-   background: #6da7de;
-   color:#000;
-}
 ul{
    list-style: none;
 }
-h3 a{
-   font-weight: 200;
-   color: #626262
-}
-#o{
-   font-weight: 200;
-   color: #626262
-}
-a{
-   color:#fff;
-   text-decoration: none;
-   transition: all 500ms ease;
-}
-a:hover{
-   color: #6ddede;
-   font-size: 1.1em;
-   text-decoration: none;
-   transition: all 500ms ease;
-}
 
-h3 a:hover{
-   font-weight: bold;
-}
 footer{
    text-align: center;
    background: #30465c;
@@ -59,12 +22,4 @@ a img:hover {
 }
 footer h3{
    text-decoration: underline;
-}
-/* para cambiar el estilo del carousel */
-.carousel-control-prev-icon {
- background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
-}
-
-.carousel-control-next-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
