@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 const publicPath = path.join(__dirname, '..', 'client');
 //const keys = require('./config/keys'); //accede a la informacion sensible
 const PORT = process.env.PORT || 5432; // numero del puerto a escuchar
-const router = require('server/routes/routes.js'); // conecta las rutas
+const router = require('./routes'); // conecta las rutas
 
 const app = express();
 
@@ -24,8 +24,8 @@ app.use(express.static(path.join(publicPath))); //une server y cliente
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
-//app.use(cors()); 
-//app.use(helmet()); 
+//app.use(cors());
+//app.use(helmet());
 //app.use(compression());
 
 
@@ -40,14 +40,14 @@ app.use(cookieParser());
 }));*/
 app.use(passport.initialize());
 app.use(passport.session());
-require('middleware/passport.js')(passport);
+require('./middleware/passport')(passport);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'client/paginaPrincipal.html'));
+  res.sendFile(path.join(publicPath, '../client/src/Home.jsx'));
 });
 
-app.get('/usuario', (req, res) => {
-  res.sendFile(path.join(publicPath, 'client/paginaUsuario.html'));
+app.get('/perfil', (req, res) => {
+  res.sendFile(path.join(publicPath, '../client/src/Profile.jsx'));
 });
 
 // Usa las rutas
@@ -55,7 +55,7 @@ app.use('/', router);
 
 
 
-//Error 404 
+//Error 404
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", true);

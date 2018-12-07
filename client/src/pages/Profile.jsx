@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import UserContainer from '../containers/UserContainer';
+import ProfileContainer from '../containers/ProfileContainer';
 import Banner from '../components/Banner.jsx';
 import Footer from '../components/Footer.jsx';
 import '../containers/MainWindow.css';
@@ -15,7 +15,7 @@ class Profile extends Component {
       </header>
       <br/>
       <div className="container">
-        <UserContainer/>
+        <ProfileContainer/>
       </div>
       <br/>
       <div className="container-fluid">

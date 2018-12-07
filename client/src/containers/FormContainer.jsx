@@ -240,7 +240,7 @@ class FormContainer extends Component {
     if (validation === true) {
       axios({
         method: "POST",
-        url: '/signup',
+        url: '/perfil',
         body: JSON.stringify(userData),
         headers: {
           Accept: "application/json",
@@ -266,7 +266,7 @@ class FormContainer extends Component {
     if (validation === true) {
       axios({
         method: "POST",
-        url: '/signin',
+        url: '/perfil',
         body: JSON.stringify(userData),
         headers: {
           Accept: "application/json",

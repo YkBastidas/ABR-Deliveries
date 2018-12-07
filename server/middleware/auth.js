@@ -4,7 +4,7 @@ module.exports = {
 		if (req.isAuthenticated()){
 			next();
 		}else{
-			res.redirect('/#signin');
+			res.redirect('/perfil');
 		}
 	}
 
