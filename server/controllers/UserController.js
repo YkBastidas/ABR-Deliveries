@@ -17,7 +17,7 @@ module.exports = {
         var db= new postgre.Client(config);
         db.connect();
         
-        const text='INSERT INTO datoscuenta(loginemail,usernames,userlastnames,passwordhash,dateofbirth) VALUES($1,$2,$3,$4,$5) RETURNING *';
+        const text='INSERT INTO datoscuenta(correo,nombre,apellido,contrasenha,fechaNacimiento) VALUES($1,$2,$3,$4,$5) RETURNING *';
          const values= [req.body.email,req.body.name,req.body.lastname,password,req.body.date];
 
         db.query(text,values,(err,res) =>{
@@ -33,21 +33,15 @@ module.exports = {
 
     },
 
-/*	getSignIn : function(req,res,next) {
-		return res.render('users/signin',{message: req.flash('info'),authmessage : req.flash('authmessage')});
-	},
+	
 
 
 	logout : function(req,res,next){
 		req.logout();
-		res.redirect('/auth/signin');
+		res.redirect('/');
 	},
 
 
-	getUserPanel : function(req,res,next){
-		res.render('user/panel');
-		isAuthenticated : req.isAuthenticated(),
-		user : req.user
-    }*/
+	
 
 };
