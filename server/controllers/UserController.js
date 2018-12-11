@@ -5,9 +5,9 @@ var bcrypt = require('bcryptjs');
 
 module.exports = {
 
-	/*getSignUp : function (req,res,next) {
-		return res.render('users/signup');
-	},*/
+	redirecProfile : function (req,res,next) {
+		 return res.redirect('/perfil');
+	},
 
 	postSignUp: function (req,res,next){
         var salt = bcrypt.genSaltSync(10);

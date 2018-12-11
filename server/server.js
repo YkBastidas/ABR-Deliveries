@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 const helmet = require('helmet'); //escribe los headers de las requests
 //const compression = require('compression');
 const publicPath = path.join(__dirname, '..', 'client/public');
-const PORT = process.env.PORT || 5432; // numero del puerto a escuchar
+const PORT = process.env.PORT || 8000; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
 
 const app = express();
@@ -28,7 +28,7 @@ app.use(helmet());
 
 app.use(passport.initialize());
 app.use(passport.session());
-require('../middleware/passport.js')(passport);
+require('./middleware/passport.js')(passport);
 
 // Usa las rutas
 app.use('/', router);

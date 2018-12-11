@@ -7,7 +7,8 @@ var AuthMiddleware = require('.././middleware/auth');
 
 // "GET" requests
 router.get('/auth/logout',controllers.UserController.logout);
-router.get('/users/panel', AuthMiddleware.isLogged ,controllers.UserController.getUserPanel);
+router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
+router.get('/', controllers.HomeController.index); //funcion de prueba
 
 
 //"POST" request
