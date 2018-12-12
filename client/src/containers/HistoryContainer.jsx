@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+ import React, {Component} from 'react';
 import Menu from '../components/Menu'
 import axios from 'axios';
 

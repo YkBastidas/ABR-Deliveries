@@ -9,7 +9,6 @@ module.exports = {
 
   postSignUp: function(req, res, next) {
     console.log(req.body);
-    console.log(req);
     var salt = bcrypt.genSaltSync(10);
     var password = bcrypt.hashSync(req.body.passwordSignUp, salt);
 

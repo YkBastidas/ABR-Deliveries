@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
+    "front": "cd client && npm install",// paquete concurrently 
+    "heroku-postbuild": "cd client && npm install",
     "dev": "nodemon server/server.js"
   },
   "author": "",
@@ -14,10 +16,10 @@
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
-    "debug": "^4.1.0",
-    "ejs": "^2.6.1",
+    "debug": "^4.1.0",//quitar 
+    "ejs": "^2.6.1",//quita this shit
     "express": "^4.16.4",
-    "http-errors": "^1.7.1",
+    "http-errors": "^1.7.1",//quitar 
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
