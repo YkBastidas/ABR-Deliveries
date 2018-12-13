@@ -13,11 +13,9 @@ router.get('/hola', controllers.HomeController.index); //funcion de prueba
 
 //"POST" request
 router.post('/auth/signup',controllers.UserController.postSignUp);//registrar
-
-
 router.post('/auth/signin',passport.authenticate('local',{//iniciar sesion
 	successRedirect : '/perfil',
-	failureRedirect : '/',
+	failureRedirect : '/'
 }));
 
 module.exports = router;

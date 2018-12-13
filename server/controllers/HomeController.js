@@ -11,7 +11,7 @@ module.exports = {
         var config=require('.././database/config');
         var db= new postgre.Client(config);
         db.connect();
-        db.query('SELECT * FROM datoscuenta')
+        db.query('SELECT * FROM usuario')
     .then(response => {
         console.log(response.rows);
         db.end();
