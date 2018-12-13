@@ -238,15 +238,20 @@ class FormContainer extends Component {
     e.preventDefault();
     let userData = this.state.newUser;
     let validation = validateSignUp();
+
+    console.log(userData);
+
+
     if (validation === true) {
-      axios({
-        method: "POST",
-        url: '/perfil',
-        body: JSON.stringify(userData),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
+      axios.post('/auth/signup', {
+        correo: userData.emailSignUp,
+        nombre: userData.name,
+        apellido: userData.lastNames,
+        contrasenha: userData.passwordSignUp,
+        fecha_nacimiento:userData.bornDate,
+        id_entrega: null
+        
+
       }).then(response => {
         response.json().then(data => {
           console.log("Successful" + data);

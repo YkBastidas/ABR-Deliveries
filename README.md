@@ -4,10 +4,11 @@ Universidad Católica Andres Bello
 Reinel Arteaga | Yorfrank Bastidas | Gabriel Rojas
 
 
-#Instrucciones para correrlo en local
+##Instrucciones para correrlo en local
 1- npm install
-2- npm run build
-3- Para correr solo el server:
+2- npm run install-client
+4- npm run build
+5- Para correr solo el server:
 npm run server para correr el servidor 
 
 Para correr el frontend:
