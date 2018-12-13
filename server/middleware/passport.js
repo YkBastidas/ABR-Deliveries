@@ -24,9 +24,12 @@ module.exports = function (passport) {
             process.exit(-1)
         })
 
+        console.log('username', username);
+        console.log('password', password);
+
         pool.connect((err, client, done) => {
             if (err) throw err
-            client.query('SELECT * FROM Usuario WHERE correo = $1',[email], (err, res) => {
+            client.query('SELECT * FROM datoscuenta WHERE correo = $1',[username], (err, res) => {
               done()
           
               if (err) {

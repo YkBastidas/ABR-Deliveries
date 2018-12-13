@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./server/server.js",
-     "client": "cd client && yarn start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "server": "nodemon ./server/server.js",
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install"
   },
   "author": "",
@@ -27,6 +28,7 @@
     "pg": "^7.6.1"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.6"
   }
 }

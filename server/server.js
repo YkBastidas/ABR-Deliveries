@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 //const cors = require('cors'); //Permite el cors
 const helmet = require('helmet'); //escribe los headers de las requests
 //const compression = require('compression');
-const publicPath = path.join(__dirname, '..', 'client/public');
+const publicPath = path.join(__dirname, '..', 'client', 'public');
 const PORT = process.env.PORT || 8000; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
 
@@ -30,11 +30,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport.js')(passport);
 
+app.get('/', function (req, res) {
+  res.send('probando')
+})
+
 // Usa las rutas
 app.use('/', router);
 
+//mandar todo get a front para react router 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
 
 
+//asd
 //Error 404
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

@@ -6,6 +6,7 @@ import './FormContainer.css';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import DateForm from '../components/DateForm';
+import { connect } from 'net';
 
 function calculateAge(date) {
 
@@ -262,17 +263,14 @@ class FormContainer extends Component {
   handleSignInSubmit(e) {
     e.preventDefault();
     let userData = this.state.newUser;
+    console.log(userData);
     let validation = validateSignIn();
     if (validation === true) {
-      axios({
-        method: "POST",
-        url: '/perfil',
-        body: JSON.stringify(userData),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(response => {
+      axios.post('/auth/signin', {
+         username: userData.emailSignIn,
+         password: userData.passwordSignIn
+      }
+        ).then(response => {
         response.json().then(data => {
           console.log("Successful" + data);
         }).catch(response => {
