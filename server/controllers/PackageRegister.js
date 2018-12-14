@@ -19,15 +19,15 @@ module.exports = {
     db.connect();
 
                                   /------NOVEDAD------/
-
-    var datos={"nombreEntrega" : "Pedro", "apellidoEntrega" : "Perez", "direccionRecogida" : "Colegio Mariano Picon Salas, Urbanización Montalbán I, Capital District 1020 VE",
+var datos;
+/*    var datos={"nombreEntrega" : "Pedro", "apellidoEntrega" : "Perez", "direccionRecogida" : "Colegio Mariano Picon Salas, Urbanización Montalbán I, Capital District 1020 VE",
   "direccionLlegada" : "Universidad Católica Andrés Bello, Parroquia La Vega, Capital District 1020 VE",
   "paquetes" : [
         { "peso" : "3,2", "altura" : "20", "ancho" : "20", "descripcion" : "Pelota", "fragil" : "0"},
         { "peso" : "25", "altura" : "50", "ancho" : "26", "descripcion" : "Estatua", "fragil" : "0"},
         { "peso" : "1", "altura" : "20",  "ancho" : "12", "descripcion" : "Celular",  "fragil" : "1"}
     ]
-   };
+   }; */
 
     var nombreEntrega=datos.nombreEntrega;
     var apellidoEntrega=datos.apellidoEntrega;
@@ -51,8 +51,9 @@ module.exports = {
        console.log(datos.paquetes[i])
      }
 
-    var textEntrega = 'INSERT INTO Entrega (nombreRemitente,apellidoRemitente,direccionRecogida,direccionEntrega) VALUES($1,$2,$3,$4) RETURNING idEntrega';
+    var textEntrega = 'INSERT INTO entrega (nombre_remitente,apellido_remitente,direccion_recogida,direccion_entrega) VALUES($1,$2,$3,$4) RETURNING idEntrega';
     var values = [nombreEntrega,apellidoEntrega,arregloDireccionSalida,arregloDireccionLlegada];
+    var idEntrega=textEntrega;
     var idPaquetes;
 
        //Seccion que introduce los paquetes uno a uno desde el JSON
@@ -63,7 +64,7 @@ module.exports = {
         console.log(err.stack());
       }
       else{
-         var textPaquetes = 'INSERT INTO Paquete (idEntrega,peso,altura,ancho,descripcion) VALUES($1,$2,$3,$4,$5) RETURNING *';
+         var textPaquetes = 'INSERT INTO paquete (id_entrega,peso,altura,ancho,descripcion) VALUES($1,$2,$3,$4,$5) RETURNING *';
          var numeroDeEntrega=res.rows[0].idEntrega;
          for(let i in datos.paquetes) {
             var peso=datos.paquetes[i].peso;
@@ -71,7 +72,7 @@ module.exports = {
             var ancho=datos.paquetes[i].ancho;
             var descripcion=datos.paquetes[i].descripcion;
             console.log(textEntrega);
-            values =[peso,altura,ancho,descripcion];
+            values =[idEntrega,peso,altura,ancho,descripcion];
 
               db.query(textPaquetes, values, (err, res) => {
                 if (err) {
@@ -81,14 +82,15 @@ module.exports = {
                    idPaquetes.push(res.rows[0].idEntrega);
                   }
               });
-
-            var updateText= 'UPDATE "Entrega" set (idPaquetes) = idPaquetes where (idEntrega)=textEntrega';
-            db.query(updateText,(err,res) =>{
+          }
+          
+          var updateText= 'UPDATE entrega set (id_paquetes) = idPaquetes where (id_entrega)=idEntrega';
+          db.query(updateText,(err,res) =>{
             if(err){
               console.log(err.stack());
-              }
-            });
-            
+            }
+          });
+
       }
 
     });
@@ -109,22 +111,5 @@ module.exports = {
   },
 
   postRegisterPackges   
-
-  /*	getSignIn : function(req,res,next) {
-  		return res.render('users/signin',{message: req.flash('info'),authmessage : req.flash('authmessage')});
-  	},
-
-
-  	logout : function(req,res,next){
-  		req.logout();
-  		res.redirect('/auth/signin');
-  	},
-
-
-  	getUserPanel : function(req,res,next){
-  		res.render('user/panel');
-  		isAuthenticated : req.isAuthenticated(),
-  		user : req.user
-      }*/
 
 };
