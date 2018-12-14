@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 //const cors = require('cors'); //Permite el cors
 const helmet = require('helmet'); //escribe los headers de las requests
 //const compression = require('compression');
-const publicPath = path.join(__dirname, '..', 'client', 'public');
+const publicPath = path.join(__dirname, '..', 'client', 'build');
 const PORT = process.env.PORT || 8000; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
 
