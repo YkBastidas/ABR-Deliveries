@@ -2,6 +2,7 @@
 
 const express = require('express'); // framework de node para gestionar rutas/servidor
 const bodyParser = require('body-parser'); // permite leer la data de las forms en req.body
+var session = require("express-session");
 const path = require('path'); //une fragmentos de url
 const passport = require('passport'); //permite gestionar sesiones del usuario
 const morgan = require('morgan'); //loggea las request en la consola (para debuggear)
@@ -15,30 +16,30 @@ const router = require('./routes/routes.js'); // conecta las rutas
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+
+
+
+app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(path.join(publicPath))); //une server y cliente
-app.use(bodyParser.json());
-app.use(morgan('dev'));
-app.use(cookieParser());
+app.use(bodyParser.json()); 
+app.use(morgan('dev')); 
+app.use(cookieParser()); 
+
 //app.use(cors());
-app.use(helmet());
+app.use(helmet()); 
 //app.use(compression());
 
-
-
+app.use(session({ secret: "cats" }));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport.js')(passport);
 
-app.get('/', function (req, res) {
-  res.send('probando')
-})
 
-// Usa las rutas
+//Usa las rutas
 app.use('/', router);
 
-//mandar todo get a front para react router
-app.get('*', (req, res) => {
+//mandar todo get a front para react router 
+app.get('/*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
@@ -60,8 +61,8 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log('Hubo un error conectando el servidor', err);
   }
-  else {
-    console.log('Usted se ha conectado en el puerto: ', PORT);
+  else { 
+    console.log('Usted se ha conectado en el puerto: ', PORT); 
   }
 });
 

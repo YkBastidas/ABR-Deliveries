@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './FormContainer.css';
+import {Switch, Route, withRouter} from 'react-router-dom';
 
 /* Import Components */
 import Input from '../components/Input';
@@ -123,16 +124,9 @@ class SignIn extends Component {
             <Input title={"Contraseña"} name={"passwordSignIn"} inputtype={"password"} value={this.props.existentUser.password} handlerChange={this.props.handleExistentPassword} placeholder={"Ingrese su contraseña"}/>{" "}
           </div>
 
-          {/* We still have to collect data from the server and send it to the user page after confirming the data */}
-          <Button
-            action={this.props.handleSignInSubmit} type={"primary"}
-            title={"Iniciar Sesión"}
-            buttonStyle={
-              {
-                margin: "10px 10px 10px 10px"
-              }
-            }
-            />{" "}
+          <Button action={this.props.handleSignInSubmit} type={"primary"} title={"Iniciar Sesión"} buttonStyle={{
+              margin: "10px 10px 10px 10px"
+            }}/>{" "}
         </form>
       </div>
     </div>)
@@ -181,27 +175,12 @@ class SignUp extends Component {
               </b>
             </small>
           </div>
-          <Button
-            action={this.props.handleSignUpSubmit}
-            type={"primary"}
-            title={"Crear Cuenta"}
-            buttonStyle={
-              {
-                margin: "10px 10px 10px 10px"
-              }
-            }
-            />{" "}
-          <Button
-            action={this.props.handleClearForm}
-            type={"warning"}
-            title={"Restaurar"}
-            buttonStyle={
-              {
-                margin: "10px 10px 10px 10px"
-              }
-            }
-            />
-            {" "}
+          <Button action={this.props.handleSignUpSubmit} type={"primary"} title={"Crear Cuenta"} buttonStyle={{
+              margin: "10px 10px 10px 10px"
+            }}/>{" "}
+          <Button action={this.props.handleClearForm} type={"warning"} title={"Restaurar"} buttonStyle={{
+              margin: "10px 10px 10px 10px"
+            }}/> {" "}
         </form>
       </div>
     </div>)
@@ -221,7 +200,7 @@ class FormContainer extends Component {
         password: "",
         signUpVisible: false
       },
-      existentUser:{
+      existentUser: {
         email: "",
         password: ""
       }
@@ -253,7 +232,7 @@ class FormContainer extends Component {
         bornDate: "",
         password: ""
       },
-      existentUser:{
+      existentUser: {
         email: "",
         password: ""
       }
@@ -320,20 +299,34 @@ class FormContainer extends Component {
       }
     }), () => console.log(this.state.newUser));
   }
+
   handleSignUpSubmit(e) {
     e.preventDefault();
     let userData = this.state.newUser;
     let validation = validateSignUp();
+
+    console.log(userData);
+
     if (validation === true) {
       axios.post('/auth/signup', {
-         body: JSON.stringify(userData)
-      }
-        ).then(response => {
-          console.log("Successful" + JSON.stringify(userData));
-        }).catch(response => {
-          //handle error
-          console.log(response);
-        });
+        correo: userData.email,
+        nombre: userData.name,
+        apellido: userData.lastNames,
+        contrasenha: userData.password,
+        fecha_nacimiento:userData.bornDate,
+        id_entrega: null
+
+      }).then( (response)=> {
+        // handle success
+        //
+        if (response===false){
+          console.log('ya existe el usuario');
+        } else {
+          console.log(response.data);
+          this.props.history.push('/');
+          return response.data;
+        }
+      });
     } else {
       console.log("Not Validated");
     }
@@ -342,17 +335,31 @@ class FormContainer extends Component {
   handleSignInSubmit(e) {
     e.preventDefault();
     let userData = this.state.existentUser;
+    console.log(userData);
     let validation = validateSignIn();
     if (validation === true) {
       axios.post('/auth/signin', {
          username: userData.email,
          password: userData.password
-      }
-      ).then(response => {
-        console.log("Successful");
-      }).catch(response => {
-      //handle error
-      console.log(response);
+      }).then( (response)=> {
+        // handle success
+
+
+        if (response===false){
+          console.log('no existe usuario');
+        } else {
+          console.log(response.data);
+          this.props.history.push('/perfil');
+          return response.data;
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+        alert('No se pudo iniciar sesion');
+      })
+      .then(function () {
+        // always executed
       });
     } else {
       console.log("Not Validated");
@@ -376,26 +383,11 @@ class FormContainer extends Component {
     return (<div>
       {
         this.state.signUpVisible
-          ? <SignUp
-              newUser={this.state.newUser}
-              onClick={this.onClick}
-              handleSignUpSubmit={this.handleSignUpSubmit}
-              handleEmail={this.handleEmail}
-              handlePassword={this.handlePassword}
-              handleBornDate={this.handleBornDate}
-              handleInput={this.handleInput}
-              handleClearForm={this.handleClearForm}
-            />
-          : <SignIn
-              existentUser={this.state.existentUser}
-              onClick={this.onClick}
-              handleSignInSubmit={this.handleSignInSubmit}
-              handleExistentEmail={this.handleExistentEmail}
-              handleExistentPassword={this.handleExistentPassword}
-            />
+          ? <SignUp newUser={this.state.newUser} onClick={this.onClick} handleSignUpSubmit={this.handleSignUpSubmit} handleEmail={this.handleEmail} handlePassword={this.handlePassword} handleBornDate={this.handleBornDate} handleInput={this.handleInput} handleClearForm={this.handleClearForm}/>
+          : <SignIn existentUser={this.state.existentUser} onClick={this.onClick} handleSignInSubmit={this.handleSignInSubmit} handleExistentEmail={this.handleExistentEmail} handleExistentPassword={this.handleExistentPassword}/>
       }
     </div>)
   }
 }
 
-export default FormContainer;
+export default withRouter(FormContainer);

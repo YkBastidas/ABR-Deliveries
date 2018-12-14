@@ -3,18 +3,47 @@ var postgre = require('pg');
 var bcrypt = require('bcryptjs');
 
 module.exports = function (passport) {
-
+	
 	passport.serializeUser(function(user,done) {
-		done(null,user);
+		done(null,user.id);
 	});
 
-	passport.deserializeUser(function(obj,done) {
-		done(null,obj);
+	passport.deserializeUser(function(user,donepass) {
+        var config=require('.././database/config');
+        const pool = postgre.Pool(config);
+
+        pool.on('error', (err, client) => {
+            console.error('Unexpected error on idle client', err)
+            process.exit(-1)
+        })
+        pool.connect((err, client, done) => {
+            if (err) throw err
+            client.query('SELECT * FROM usuario WHERE id = $1',[user], (err, res) => {
+                if (err) {
+                    console.log(err.stack)
+                }
+                else {
+                    if (res.rows.length>0){
+                        var user = res.rows[0];
+                            console.log('salio de sesion-->', user);
+                            return donepass (null,user);   
+                    } 
+                    donepass(null,user);
+                }
+                donepass(null,false);
+                done();
+            });
+        });
+
+		
 	});
 
 	passport.use(new LocalStrategy({
+        usernameField : 'username',
+        passwordField : 'password',
 		passReqToCallback: true
-	}, function(req,username,password,done){
+	}, function(req,username,password,donepass){
+
         var config=require('.././database/config');
         const pool = postgre.Pool(config);
 
@@ -29,30 +58,28 @@ module.exports = function (passport) {
         pool.connect((err, client, done) => {
             if (err) throw err
             client.query('SELECT * FROM usuario WHERE correo = $1',[username], (err, res) => {
-              done()
-
+           //  done()
+          
               if (err) {
                 console.log(err.stack)
               } else {
                 if (res.rows.length>0){
                     var user = res.rows[0];
+
                     if (bcrypt.compareSync(password,user.contrasenha)){
-                        console.log("inicie sesion");
-                        return done (null,user,{
-                            "nombre": user.nombre,
-                            "apellido": user.apellido,
-                            "entregas": user.id_entrega
-                        });
+
+                        console.log(user);
+                        return donepass (null,user);
+                    }else {
+                        return donepass(null,false);
                     }
-                    console.log("contraseña incorrecta");//aqui fue por contraseña incorrecta
-                     return done(null,false);
+    
                 }
-                console.log("correo inexistente");//aqui fue por correo no valido
-                return done(null,false);
+                done(); 
+               
               }
             })
-        })
-        pool.end();
+          })
 
 		return;
 	}

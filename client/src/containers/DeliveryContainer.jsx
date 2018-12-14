@@ -5,32 +5,23 @@ import Button from '../components/Button';
 import Menu from '../components/Menu';
 
 class DeliveryContainer extends Component {
-
-  /* handleSendDirections(e){
+/*
+  handleDelivery(e){
     e.preventDefault();
-    let directionsData = '' ;
-    let validation = validateDirections();
-    if (validation === true) {
-      axios({
-        method: "GET",
-        url: '/perfil',
-        body: JSON.stringify(userData),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(response => {
-        response.json().then(data => {
-          console.log("Successful" + data);
-        }).catch(response => {
-          //handle error
-          console.log(response);
-        });
-      });
-    } else {
-      console.log("Not Validated");
+    let directionStart = '' ;
+    let directionEnd = '' ;
+    axios.get('/', {
+      data :{
+        directionStart,
+        directionEnd
+      }
     }
-    return validation;
+    ).then(response => {
+    console.log("Successful" + directionStart + directionEnd);
+    }).catch(response => {
+    //handle error
+    console.log(response);
+    });
   }
 */
   render() {
@@ -51,7 +42,7 @@ class DeliveryContainer extends Component {
       <div className="sideLeft col-xs-12 col-sm-10">
         <Link to ="/paquetes">
           <Button
-            action={""}
+            action={this.handleDelivery}
             type={"primary"}
             title={"Paquetes"}
             buttonStyle={buttonStyle}/>

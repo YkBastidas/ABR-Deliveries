@@ -27,15 +27,20 @@ class ProfileContainer extends Component {
     this.getAllUser();
   }
   getAllUser(){
-    axios({
-      method:"GET",
-      url:"https://jsonplaceholder.typicode.com/users",
-    }).then((response)=>{
+    axios.get('https://jsonplaceholder.typicode.com/users')
+    .then((response)=>{
       console.log(response.data);
       this.setState({
         userList:response.data
       })
     })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
   }
   displayUsers(){
     return this.state.userList.map( user => {

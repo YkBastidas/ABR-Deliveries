@@ -13,9 +13,20 @@ router.get('/hola', controllers.HomeController.index); //funcion de prueba
 
 //"POST" request
 router.post('/auth/signup',controllers.UserController.postSignUp);//registrar
-router.post('/auth/signin',passport.authenticate('local',{//iniciar sesion
-	successRedirect : '/perfil',
-	failureRedirect : '/'
-}));
+
+
+router.post('/auth/signin', function(req, res, next) {
+	passport.authenticate('local', function(err, user, info) {
+	  if (err) { return next(err); }
+	  if (!user) { console.log('no usuario'); return res.send(false); }
+	  req.logIn(user, function(err) {
+		if (err) { return next(err); }
+		console.log('User', user);
+		return res.send(user);
+	  });
+	})(req, res, next);
+  });
+
+
 
 module.exports = router;
