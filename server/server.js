@@ -40,7 +40,7 @@ app.use('/', router);
 
 //mandar todo get a front para react router 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile(path.join(publicPath, '../client/public/index.html'));
 });
 
 
