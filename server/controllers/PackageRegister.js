@@ -33,15 +33,27 @@ module.exports = {
     var apellidoEntrega=datos.apellidoEntrega;
     var direccionLlegada=datos.direccionLlegada;
     var direccionRecogida=datos.direccionRecogida;
+
+    var arregloDireccionLlegada="row('"+direccionLlegada.linea1+"',";
+     arregloDireccionLlegada=arregloDireccionLlegada+"'"+direccionLlegada.linea2+"',";
+     arregloDireccionLlegada=arregloDireccionLlegada+"'"+direccionLlegada.codigoPostal+"',";
+     arregloDireccionLlegada=arregloDireccionLlegada+"'"+direccionLlegada.ciudad+"',";
+     arregloDireccionLlegada=arregloDireccionLlegada+"'"+direccionLlegada.pais+"')";
+     
+
+     var arregloDireccionSalida="row('"+arregloDireccionSalida.linea1+"',";
+     arregloDireccionSalida=arregloDireccionSalida+"'"+direccionRecogida.linea2+"',";
+     arregloDireccionSalida=arregloDireccionSalida+"'"+direccionRecogida.codigoPostal+"',";
+     arregloDireccionSalida=arregloDireccionSalida+"'"+direccionRecogida.ciudad+"',";
+     arregloDireccionSalida=arregloDireccionSalida+"'"+direccionRecogida.pais+"')";
+
      for(let i in datos.paquetes) {
        console.log(datos.paquetes[i])
      }
 
-
     var textEntrega = 'INSERT INTO Entrega (nombreRemitente,apellidoRemitente,direccionRecogida,direccionEntrega) VALUES($1,$2,$3,$4) RETURNING idEntrega';
-    var values = [nombreEntrega,apellidoEntrega,direccionRecogida, direccionLlegada];
+    var values = [nombreEntrega,apellidoEntrega,arregloDireccionSalida,arregloDireccionLlegada];
     var idPaquetes;
-    var textPaquetes = 'INSERT INTO Paquete (idEntrega,peso,altura,ancho,descripcion,fragil) VALUES($1,$2,$3,$4,$5,$6) RETURNING *';
 
        //Seccion que introduce los paquetes uno a uno desde el JSON
 
@@ -50,35 +62,39 @@ module.exports = {
       if (err) {
         console.log(err.stack());
       }
+      else{
+         var textPaquetes = 'INSERT INTO Paquete (idEntrega,peso,altura,ancho,descripcion) VALUES($1,$2,$3,$4,$5) RETURNING *';
+         var numeroDeEntrega=res.rows[0].idEntrega;
+         for(let i in datos.paquetes) {
+            var peso=datos.paquetes[i].peso;
+            var altura=datos.paquetes[i].altura;
+            var ancho=datos.paquetes[i].ancho;
+            var descripcion=datos.paquetes[i].descripcion;
+            console.log(textEntrega);
+            values =[peso,altura,ancho,descripcion];
+
+              db.query(textPaquetes, values, (err, res) => {
+                if (err) {
+                   console.log(err.stack());
+                 }
+                else{
+                   idPaquetes.push(res.rows[0].idEntrega);
+                  }
+              });
+
+            var updateText= 'UPDATE "Entrega" set (idPaquetes) = idPaquetes where (idEntrega)=textEntrega';
+            db.query(updateText,(err,res) =>{
+            if(err){
+              console.log(err.stack());
+              }
+            });
+            
+      }
 
     });
 
-    var numeroDeEntrega=res.rows[0].idEntrega;
+    
 
-    for(let i in datos.paquetes) {
-       var peso=datos.paquetes[i].peso;
-       var altura=datos.paquetes[i].altura;
-       var ancho=datos.paquetes[i].ancho;
-       var descripcion=datos.paquetes[i].descripcion;
-       var fragil=datos.paquetes[i].fragil;
-       console.log(textEntrega);
-       values =[peso,altura,ancho,descripcion,fragil];
-
-       db.query(textPaquetes, values, (err, res) => {
-          if (err) {
-             console.log(err.stack());
-           }
-           else{
-             idPaquetes.push(res.rows[0].idEntrega);
-           }
-       }
-
-       var updateText= 'UPDATE "Entrega" set (idPaquetes) = idPaquetes where (idEntrega)=textEntrega';
-       db.query(textPaquetes,(err,res) =>{
-          if(err){
-            console.log(err.stack());
-          }
-       });
      }
 
 
