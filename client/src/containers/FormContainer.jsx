@@ -201,8 +201,7 @@ class FormContainer extends Component {
     this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
     this.handleClearForm = this.handleClearForm.bind(this);
     this.handleInput = this.handleInput.bind(this);
-    this.props = this.props.bind(this);
-  
+    
     
 
     this.state = {
@@ -278,7 +277,7 @@ class FormContainer extends Component {
       axios.post('/auth/signin', {
          username: userData.emailSignIn,
          password: userData.passwordSignIn
-      }).then(function (response) {
+      }).then( (response)=> {
         // handle success
         
         
@@ -286,7 +285,7 @@ class FormContainer extends Component {
           console.log('no existe usuario');
         } else {
           console.log(response.data);
-          console.log(this.state);
+         // console.log(this.state);
           this.props.history.push('/perfil');
           return response.data;
         }

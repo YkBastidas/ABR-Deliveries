@@ -5,14 +5,42 @@ var bcrypt = require('bcryptjs');
 module.exports = function (passport) {
 	
 	passport.serializeUser(function(user,done) {
-		done(null,user);
+		done(null,user.id);
 	});
 
-	passport.deserializeUser(function(obj,done) {
-		done(null,obj);
+	passport.deserializeUser(function(user,donepass) {
+        var config=require('.././database/config');
+        const pool = postgre.Pool(config);
+
+        pool.on('error', (err, client) => {
+            console.error('Unexpected error on idle client', err)
+            process.exit(-1)
+        })
+        pool.connect((err, client, done) => {
+            if (err) throw err
+            client.query('SELECT * FROM usuario WHERE id = $1',[user], (err, res) => {
+                if (err) {
+                    console.log(err.stack)
+                }
+                else {
+                    if (res.rows.length>0){
+                        var user = res.rows[0];
+                            console.log('salio de sesion-->', user);
+                            return donepass (null,user);   
+                    } 
+                    donepass(null,user);
+                }
+                donepass(null,false);
+                done();
+            });
+        });
+
+		
 	});
 
 	passport.use(new LocalStrategy({
+        usernameField : 'username',
+        passwordField : 'password',
 		passReqToCallback: true
 	}, function(req,username,password,donepass){
 
@@ -42,10 +70,13 @@ module.exports = function (passport) {
 
                         console.log(user);
                         return donepass (null,user);
+                    }else {
+                        return donepass(null,false);
                     }
     
-                } 
-               return done(null,false)
+                }
+                done(); 
+               
               }
             })
           })

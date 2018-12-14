@@ -2,6 +2,7 @@
 
 const express = require('express'); // framework de node para gestionar rutas/servidor
 const bodyParser = require('body-parser'); // permite leer la data de las forms en req.body
+var session = require("express-session");
 const path = require('path'); //une fragmentos de url
 const passport = require('passport'); //permite gestionar sesiones del usuario
 const morgan = require('morgan'); //loggea las request en la consola (para debuggear)
@@ -28,8 +29,7 @@ app.use(cookieParser());
 app.use(helmet()); 
 //app.use(compression());
 
-
-
+app.use(session({ secret: "cats" }));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport.js')(passport);
