@@ -19,7 +19,7 @@ module.exports = {
     db.connect();
 
                                   /------NOVEDAD------/
-var datos;
+   var datos=req.body.;
 /*    var datos={"nombreEntrega" : "Pedro", "apellidoEntrega" : "Perez", "direccionRecogida" : "Colegio Mariano Picon Salas, Urbanización Montalbán I, Capital District 1020 VE",
   "direccionLlegada" : "Universidad Católica Andrés Bello, Parroquia La Vega, Capital District 1020 VE",
   "paquetes" : [
@@ -51,19 +51,26 @@ var datos;
        console.log(datos.paquetes[i])
      }
 
-    var textEntrega = 'INSERT INTO entrega (nombre_remitente,apellido_remitente,direccion_recogida,direccion_entrega) VALUES($1,$2,$3,$4) RETURNING idEntrega';
+    var textEntrega = 'INSERT INTO entrega (nombre_remitente,apellido_remitente,direccion_recogida,direccion_entrega) VALUES($1,$2,$3,$4) RETURNING *';
     var values = [nombreEntrega,apellidoEntrega,arregloDireccionSalida,arregloDireccionLlegada];
-    var idEntrega=textEntrega;
+    var idEntrega;
     var idPaquetes;
+    var idEntregaValida=0;
 
        //Seccion que introduce los paquetes uno a uno desde el JSON
 
 
-    db.query(textEntrega, values, (err, res) => {
-      if (err) {
-        console.log(err.stack());
-      }
-      else{
+      db.query(textEntrega, values, (err, res) => {
+        if (err) {
+          console.log(err.stack());
+        }
+        else{
+           idEntrega=res.rows[0].id_entrega;
+           idEntregaValida=1;
+        }
+      }); //FIN DEL QUERY
+
+       if(EntregaValida){
          var textPaquetes = 'INSERT INTO paquete (id_entrega,peso,altura,ancho,descripcion) VALUES($1,$2,$3,$4,$5) RETURNING *';
          var numeroDeEntrega=res.rows[0].idEntrega;
          for(let i in datos.paquetes) {
@@ -71,44 +78,31 @@ var datos;
             var altura=datos.paquetes[i].altura;
             var ancho=datos.paquetes[i].ancho;
             var descripcion=datos.paquetes[i].descripcion;
-            console.log(textEntrega);
-            values =[idEntrega,peso,altura,ancho,descripcion];
+            values =[numeroDeEntrega,peso,altura,ancho,descripcion];
 
-              db.query(textPaquetes, values, (err, res) => {
-                if (err) {
-                   console.log(err.stack());
-                 }
-                else{
-                   idPaquetes.push(res.rows[0].idEntrega);
-                  }
-              });
-          }
-          
-          var updateText= 'UPDATE entrega set (id_paquetes) = idPaquetes where (id_entrega)=idEntrega';
-          db.query(updateText,(err,res) =>{
-            if(err){
-              console.log(err.stack());
-            }
-          });
+            db.query(textPaquetes, values, (err, res) => {
+               if (err) {
+                 console.log(err.stack());
+               }
+               else{                   
+                 idPaquetes.push(res.rows[0].idEntrega);
+               }
+            }); //FIN DEL QUERY
+          } //FIN FOR DE PAQUETES
+        } //FIN ENTREGA VALIDA
 
-      }
-
-    });
-
-    
-
-     }
-
-
-    
-
-    cons
+      var updateText= 'UPDATE entrega set (id_paquetes) = idPaquetes where (id_entrega)=idEntrega';
+      db.query(updateText,(err,res) =>{
+        if(err){
+           console.log(err.stack());
+        }
+      }); //FIN DEL QUERY
 
     db.end();
 
     return res.redirect('/perfil');
 
-  },
+  }, //FIN DE LA FUNCION
 
   postRegisterPackges   
 
