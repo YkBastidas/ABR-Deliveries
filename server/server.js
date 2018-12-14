@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser'); //permite leer las cookies
 //const cors = require('cors'); //Permite el cors
 const helmet = require('helmet'); //escribe los headers de las requests
 //const compression = require('compression');
-const publicPath = path.join(__dirname, '..', 'client', 'public');
+const publicPath = path.join(__dirname, '..', 'client', 'build');
 const PORT = process.env.PORT || 8000; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
 
@@ -19,14 +19,14 @@ const app = express();
 
 
 
-app.use(bodyParser.urlencoded({extended: true})); 
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(publicPath))); //une server y cliente
-app.use(bodyParser.json()); 
-app.use(morgan('dev')); 
-app.use(cookieParser()); 
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+app.use(cookieParser());
 
 //app.use(cors());
-app.use(helmet()); 
+app.use(helmet());
 //app.use(compression());
 
 app.use(session({ secret: "cats" }));
@@ -38,9 +38,9 @@ require('./middleware/passport.js')(passport);
 //Usa las rutas
 app.use('/', router);
 
-//mandar todo get a front para react router 
+//mandar todo get a front para react router
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile(path.join(publicPath, '../client/build/index.html'));
 });
 
 
@@ -61,8 +61,8 @@ app.listen(PORT, (err) => {
   if (err) {
     console.log('Hubo un error conectando el servidor', err);
   }
-  else { 
-    console.log('Usted se ha conectado en el puerto: ', PORT); 
+  else {
+    console.log('Usted se ha conectado en el puerto: ', PORT);
   }
 });
 
