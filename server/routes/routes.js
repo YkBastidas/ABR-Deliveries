@@ -1,32 +1,32 @@
 var express = require('express');
 var router = express.Router();
 var passport= require('passport');
-var controllers = require('server/controllers');
-//var AuthMiddleware = require('.././middleware/auth');
+var controllers = require('.././controllers');
+var AuthMiddleware = require('.././middleware/auth');
 
 
-router.get('/muestra',controllers.HomeController.index);
-router.get('/prueba',controllers.HomeController.pruebaInsertar);
-//router.get('/signup',controllers.UserController.getSignUp);
-
-router.post('/#signup',controllers.UserController.postSignUp);
-router.post('/',passport.authenticate('local',{
-	successRedirect : '/usuario',
-	failureRedirect : '/'
-}));
-
-
-//rutas de usuario
-/*router.get('/auth/signup',controllers.UserController.getSignUp);
-router.post('/auth/signup',controllers.UserController.postSignUp);
-router.get('/auth/signin',controllers.UserController.getSignIn);
-router.post('/auth/signin',passport.authenticate('local',{
-	successRedirect : '/lugar de entrada',
-	failureRedirect : '/auth/signin',
-	failureFlash : true
-}));
-
+// "GET" requests
 router.get('/auth/logout',controllers.UserController.logout);
-router.get('/users/panel',AuthMiddleware.isLogged,controllers.UserController.getUserPanel);
-*/
+router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
+router.get('/hola', controllers.HomeController.index); //funcion de prueba
+
+
+//"POST" request
+router.post('/auth/signup',controllers.UserController.postSignUp);//registrar
+
+
+router.post('/auth/signin', function(req, res, next) {
+	passport.authenticate('local', function(err, user, info) {
+	  if (err) { return next(err); }
+	  if (!user) { console.log('no usuario'); return res.send(false); }
+	  req.logIn(user, function(err) {
+		if (err) { return next(err); }
+		console.log('User', user);
+		return res.send(user);
+	  });
+	})(req, res, next);
+  });
+
+
+
 module.exports = router;

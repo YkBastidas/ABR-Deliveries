@@ -1,54 +1,43 @@
 var postgre = require('pg');
 var bcrypt = require('bcryptjs');
 
-
-
 module.exports = {
 
-	/*getSignUp : function (req,res,next) {
-		return res.render('users/signup');
-	},*/
+  redirecProfile: function(req, res, next) {
+    return res.redirect('/perfil');
+  },
 
-	postSignUp : function (req,res,next){
-        console.log(req.body);
-        console.log(req);
-        var salt = bcrypt.genSaltSync(10);
-        var password = bcrypt.hashSync(req.body.contraseniaRegistro, salt);
-        
-        var config=require('server/database/config');
-        var db= new postgre.Client(config);
-        db.connect();
-        
-        const text='INSERT INTO datoscuenta(loginemail,usernames,userlastnames,passwordhash,dateofbirth) VALUES($1,$2,$3,$4,$5) RETURNING *';
-         const values= [req.body.correoRegistro,req.body.nombre,req.body.apellidos,password,req.body.fechaNacimiento];
-        db.query(text,values,(err,res) =>{
-            if (err) {
-                console.log(err.stack());
-            }
+  postSignUp: function(req, res, next) {
+    console.log(req.body);
+    var salt = bcrypt.genSaltSync(10);
+    var contrasenha = bcrypt.hashSync(req.body.contrasenha, salt);
 
+    var config = require('.././database/config');
+    var db = new postgre.Client(config);
+    db.connect();
 
-			db.end();
-        });
+    const text = 'INSERT INTO usuario(correo,nombre,apellido,contrasenha,fecha_nacimiento,id_entrega) VALUES($1,$2,$3,$4,$5,$6) RETURNING *';
+    const values = [req.body.correo, req.body.nombre, req.body.apellido, contrasenha, req.body.fecha_nacimiento, req.body.id_entrega];
+    db.query(text, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+      }
 
-        return res.redirect('/#signin');
+      db.end();
+    });
 
-    },
-
-/*	getSignIn : function(req,res,next) {
-		return res.render('users/signin',{message: req.flash('info'),authmessage : req.flash('authmessage')});
-	},
+    return res.redirect('/');
+  },
 
 
-	logout : function(req,res,next){
-		req.logout();
-		res.redirect('/auth/signin');
-	},
 
 
-	getUserPanel : function(req,res,next){
-		res.render('user/panel');
-		isAuthenticated : req.isAuthenticated(),
-		user : req.user
-    }*/
+  logout: function(req, res, next) {
+    req.logout();
+    res.redirect('/');
+  },
+
+
+
 
 };
