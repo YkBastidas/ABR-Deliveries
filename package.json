@@ -1,22 +1,26 @@
 {
-  "name": "proyect",
+  "name": "abr-deliveries",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js"
+    "start": "node ./server/server.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "server": "nodemon ./server/server.js",
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.3",
-    "cookie-session": "^2.0.0-beta.3",
     "debug": "^4.1.0",
-    "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "helmet": "^3.15.0",
     "http-errors": "^1.7.1",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -25,6 +29,7 @@
     "pg": "^7.6.1"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.6"
   }
 }
