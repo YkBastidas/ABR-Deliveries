@@ -96,6 +96,7 @@ function validateSignIn() {
 };
 
 class SignIn extends Component {
+
   render() {
     return (<div>
       <div id="SignIn">
@@ -115,15 +116,23 @@ class SignIn extends Component {
 
         <form onSubmit={this.props.handleSignInSubmit} className="needs-validation" id="formSignIn">
           <div className="form-group">
-            <Input title={"Correo electrónico"} name={"emailSignIn"} inputtype={"email"} value={this.props.email} handlerChange={this.props.handleInput} placeholder={"correo@direcion.ext"}/>{" "}
+            <Input title={"Correo electrónico"} name={"emailSignIn"} inputtype={"email"} value={this.props.existentUser.email} handlerChange={this.props.handleExistentEmail} placeholder={"correo@direcion.ext"}/>{" "}
           </div>
 
           <div className="form-group">
-            <Input title={"Contraseña"} name={"passwordSignIn"} inputtype={"password"} value={this.props.password} handlerChange={this.props.handleInput} placeholder={"Ingrese su contraseña"}/>{" "}
+            <Input title={"Contraseña"} name={"passwordSignIn"} inputtype={"password"} value={this.props.existentUser.password} handlerChange={this.props.handleExistentPassword} placeholder={"Ingrese su contraseña"}/>{" "}
           </div>
 
           {/* We still have to collect data from the server and send it to the user page after confirming the data */}
-          <Button action={this.props.handleSignInSubmit} type={"primary"} title={"Iniciar Sesión"}/>{" "}
+          <Button
+            action={this.props.handleSignInSubmit} type={"primary"}
+            title={"Iniciar Sesión"}
+            buttonStyle={
+              {
+                margin: "10px 10px 10px 10px"
+              }
+            }
+            />{" "}
         </form>
       </div>
     </div>)
@@ -133,6 +142,7 @@ class SignIn extends Component {
 class SignUp extends Component {
 
   render() {
+
     return (<div>
 
       <div id="signUp">
@@ -150,29 +160,48 @@ class SignUp extends Component {
         <form onSubmit={this.props.handleSignUpSubmit} className="needs-validation" id="formSignUp">
 
           <div className="form-group">
-            <Input title={"Correo electrónico"} name={"emailSignUp"} inputtype={"email"} value={this.props.email} handlerChange={this.props.handleInput} placeholder={"correo@direcion.ext"}/>{" "}
+            <Input title={"Correo electrónico"} name={"emailSignUp"} inputtype={"email"} value={this.props.newUser.email} handlerChange={this.props.handleEmail} placeholder={"correo@direcion.ext"}/>{" "}
           </div>
 
           <div className="form-group">
-            <Input title={"Nombre(s)"} name={"name"} inputtype={"text"} value={this.props.name} handlerChange={this.props.handleInput} placeholder={"Ingresa tu nombre"}/>{" "}
+            <Input title={"Nombre(s)"} name={"name"} inputtype={"text"} value={this.props.newUser.name} handlerChange={this.props.handleInput} placeholder={"Ingresa tu nombre"}/>{" "}
           </div>
 
           <div className="form-group">
-            <Input title={"Apellido(s)"} name={"lastNames"} inputtype={"text"} value={this.props.lastNames} handlerChange={this.props.handleInput} placeholder={"Ingresa tu apellido"}/>{" "}
+            <Input title={"Apellido(s)"} name={"lastNames"} inputtype={"text"} value={this.props.newUser.lastNames} handlerChange={this.props.handleInput} placeholder={"Ingresa tu apellido"}/>{" "}
           </div>
 
           <div className="form-group">
-            <DateForm title={"Fecha de nacimiento:"} name={"bornDate"} inputtype={"date"} min={"1899-01-01"} max={maxDate()} value={this.props.bornDate} handlerChange={this.props.handleBornDate}/>{" "}
+            <DateForm title={"Fecha de nacimiento:"} name={"bornDate"} inputtype={"date"} min={"1899-01-01"} max={maxDate()} value={this.props.newUser.bornDate} handlerChange={this.props.handleBornDate}/>{" "}
           </div>
           <div className="form-group">
-            <Input title={"Contraseña:"} name={"passwordSignUp"} inputtype={"password"} value={this.props.password} handlerChange={this.props.handleInput} placeholder={"Ingresa tu contraseña"}/>{" "}
+            <Input title={"Contraseña:"} name={"passwordSignUp"} inputtype={"password"} value={this.props.newUser.password} handlerChange={this.props.handlePassword} placeholder={"Ingresa tu contraseña"}/>{" "}
             <small id="passwordHelpBlock" className="form-text text-muted">
               <b>Tu contraseña debe tener entre 8-20 caracteres, contener por lo menos una letra mayúscula y una minúscula y tener por lo menos 1 caracter especial.
               </b>
             </small>
           </div>
-          <Button action={this.props.handleSignUpSubmit} type={"primary"} title={"Crear Cuenta"}/>{" "}
-          <Button action={console.log(this.props.newUser)} type={"warning"} title={"Restaurar"}/>{" "}
+          <Button
+            action={this.props.handleSignUpSubmit}
+            type={"primary"}
+            title={"Crear Cuenta"}
+            buttonStyle={
+              {
+                margin: "10px 10px 10px 10px"
+              }
+            }
+            />{" "}
+          <Button
+            action={this.props.handleClearForm}
+            type={"warning"}
+            title={"Restaurar"}
+            buttonStyle={
+              {
+                margin: "10px 10px 10px 10px"
+              }
+            }
+            />
+            {" "}
         </form>
       </div>
     </div>)
@@ -189,10 +218,20 @@ class FormContainer extends Component {
         lastNames: "",
         email: "",
         bornDate: "",
+        password: "",
+        signUpVisible: false
+      },
+      existentUser:{
+        email: "",
         password: ""
       }
     };
 
+    this.handleExistentEmail = this.handleExistentEmail.bind(this);
+    this.handleExistentPassword = this.handleExistentPassword.bind(this);
+
+    this.handleEmail = this.handleEmail.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
     this.handleBornDate = this.handleBornDate.bind(this);
 
     this.handleSignInSubmit = this.handleSignInSubmit.bind(this);
@@ -200,20 +239,67 @@ class FormContainer extends Component {
     this.handleClearForm = this.handleClearForm.bind(this);
     this.handleInput = this.handleInput.bind(this);
 
-    this.state = {
-      signUpVisible: false
-    }
     this.onClick = this.onClick.bind(this);
   }
 
   /* This lifecycle hook gets executed when the component mounts */
 
   onClick() {
+    this.setState({
+      newUser: {
+        name: "",
+        lastNames: "",
+        email: "",
+        bornDate: "",
+        password: ""
+      },
+      existentUser:{
+        email: "",
+        password: ""
+      }
+    })
     this.setState(prevState => ({
       signUpVisible: !prevState.signUpVisible
     }))
   }
 
+  handleExistentPassword(e) {
+    let value = e.target.value;
+    this.setState(prevState => ({
+      existentUser: {
+        ...prevState.existentUser,
+        password: value
+      }
+    }), () => console.log(this.state.existentUser));
+  }
+  handleExistentEmail(e) {
+    let value = e.target.value;
+    this.setState(prevState => ({
+      existentUser: {
+        ...prevState.existentUser,
+        email: value
+      }
+    }), () => console.log(this.state.existentUser));
+  }
+
+  handlePassword(e) {
+    let value = e.target.value;
+    this.setState(prevState => ({
+      newUser: {
+        ...prevState.newUser,
+        password: value
+      }
+    }), () => console.log(this.state.newUser));
+  }
+  handleEmail(e) {
+    let value = e.target.value;
+    this.setState(prevState => ({
+      newUser: {
+        ...prevState.newUser,
+        email: value
+      }
+    }), () => console.log(this.state.newUser));
+  }
   handleBornDate(e) {
     let value = e.target.value;
     this.setState(prevState => ({
@@ -223,6 +309,7 @@ class FormContainer extends Component {
       }
     }), () => console.log(this.state.newUser));
   }
+
   handleInput(e) {
     let value = e.target.value;
     let name = e.target.name;
@@ -238,22 +325,15 @@ class FormContainer extends Component {
     let userData = this.state.newUser;
     let validation = validateSignUp();
     if (validation === true) {
-      axios({
-        method: "POST",
-        url: '/perfil',
-        body: JSON.stringify(userData),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(response => {
-        response.json().then(data => {
-          console.log("Successful" + data);
+      axios.post('/auth/signup', {
+         body: JSON.stringify(userData)
+      }
+        ).then(response => {
+          console.log("Successful" + JSON.stringify(userData));
         }).catch(response => {
           //handle error
           console.log(response);
         });
-      });
     } else {
       console.log("Not Validated");
     }
@@ -261,24 +341,18 @@ class FormContainer extends Component {
   }
   handleSignInSubmit(e) {
     e.preventDefault();
-    let userData = this.state.newUser;
+    let userData = this.state.existentUser;
     let validation = validateSignIn();
     if (validation === true) {
-      axios({
-        method: "POST",
-        url: '/perfil',
-        body: JSON.stringify(userData),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(response => {
-        response.json().then(data => {
-          console.log("Successful" + data);
-        }).catch(response => {
-          //handle error
-          console.log(response);
-        });
+      axios.post('/auth/signin', {
+         username: userData.email,
+         password: userData.password
+      }
+      ).then(response => {
+        console.log("Successful");
+      }).catch(response => {
+      //handle error
+      console.log(response);
       });
     } else {
       console.log("Not Validated");
@@ -295,15 +369,30 @@ class FormContainer extends Component {
         bornDate: "",
         password: ""
       }
-    });
+    }, () => console.log(this.state.newUser));
   }
 
   render() {
     return (<div>
       {
         this.state.signUpVisible
-          ? <SignUp newUser={this.state.newUser} onClick={this.onClick} handleSignUpSubmit={this.handleSignUpSubmit} handleBornDate={this.handleBornDate} handleInput={this.handleInput} handleClearForm={this.handleClearForm}/>
-          : <SignIn newUser={this.state.newUser} onClick={this.onClick} handleSignInSubmit={this.handleSignInSubmit} handleInput={this.handleInput}/>
+          ? <SignUp
+              newUser={this.state.newUser}
+              onClick={this.onClick}
+              handleSignUpSubmit={this.handleSignUpSubmit}
+              handleEmail={this.handleEmail}
+              handlePassword={this.handlePassword}
+              handleBornDate={this.handleBornDate}
+              handleInput={this.handleInput}
+              handleClearForm={this.handleClearForm}
+            />
+          : <SignIn
+              existentUser={this.state.existentUser}
+              onClick={this.onClick}
+              handleSignInSubmit={this.handleSignInSubmit}
+              handleExistentEmail={this.handleExistentEmail}
+              handleExistentPassword={this.handleExistentPassword}
+            />
       }
     </div>)
   }

@@ -7,7 +7,7 @@ const Button = props => {
         props.type === "primary" ? "btn btn-primary" : "btn btn-warning"
       }
       onClick={props.action}
-      style={props.buttonstyle}
+      style={props.buttonStyle}
     >
       {props.title}
     </button>

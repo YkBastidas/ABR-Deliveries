@@ -44,8 +44,8 @@ class ProfileContainer extends Component {
           {
             user.id === 1 ?
                 <div>
-                  <div className="username">Name: {user.name}</div>
-                  <div className="username">Email: {user.email}</div>
+                  <div>Nombre: {user.name}</div>
+                  <div>Correo: {user.email}</div>
                 </div>
             :
             ""

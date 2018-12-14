@@ -1,22 +1,21 @@
 import React from "react";
 
-const DateForm = props => {
-  //console.log(props.value);
+const TextArea = props => {
+
   return (
+
     <div className="form-group">
       <div className="input-group">
         <label htmlFor={props.name} className="sr-only">
           {props.title}
         </label>
-        <input
+        <textarea
           className="form-control"
           id={props.name}
           name={props.name}
-          type={props.inputtype}
-          min={props.min}
-          max={props.max}
           value={props.value}
           onChange={props.handlerChange}
+          placeholder={props.placeholder}
           required
           {...props}
         />
@@ -25,4 +24,4 @@ const DateForm = props => {
   );
 };
 
-export default DateForm;
+export default TextArea;

@@ -23,7 +23,7 @@ class Menu extends Component {
           <Link className={
               this.state.active === "delivery" ? "nav-link active" : "nav-link"
             }
-            to="/entrega/">
+            to="/entregas/">
             Nuevo Pedido
           </Link>
         </li>

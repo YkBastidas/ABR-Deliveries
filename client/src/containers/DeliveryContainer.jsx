@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Button from '../components/Button';
 import Menu from '../components/Menu';
 
@@ -43,13 +44,19 @@ class DeliveryContainer extends Component {
       position: 'absolute',
       zIndex: '3000',
       top: '85%',
-      left: '85%'
+      left: '80%'
     };
 
     return (<section className="main row align-items-center">
       <div className="sideLeft col-xs-12 col-sm-10">
-        <Button action={console.log()} type={"primary"} title={"Enviar"} buttonstyle={buttonStyle}/>
-        <div id="map" style={mapStyle}></div>
+        <Link to ="/paquetes">
+          <Button
+            action={""}
+            type={"primary"}
+            title={"Paquetes"}
+            buttonStyle={buttonStyle}/>
+        </Link>
+          <div id="map" style={mapStyle}></div>
       </div>
       <div className="sideRight col-xs-12 col-sm-2">
         <Menu active='delivery'/>
@@ -57,7 +64,7 @@ class DeliveryContainer extends Component {
     </section>);
   }
 
-  componentDidMount() {
+    componentDidMount() {
     const mapquest = window.L.mapquest;
 
     mapquest.key = 'xuikGnFkecGmfa6wyQ2wkE5n0OGBCnAz';
@@ -130,7 +137,6 @@ class DeliveryContainer extends Component {
     }).addTo(map);
 
   }
-
 }
 
 export default DeliveryContainer

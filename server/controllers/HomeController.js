@@ -1,43 +1,30 @@
+var postgre = require('pg');
+var bcrypt = require('bcryptjs');
+
+var config=require('.././database/config');
+const pool = postgre.Pool(config);
+
 module.exports = {
 
-  index: function(req, res, next) {
-    res.send('hola mundo');
-    const postgre = require('pg');
-    var config = require('../database/config');
-    var db = new postgre.Client(config);
-    db.connect();
-    db.query('SELECT * FROM Usuario')
-      .then(response => {
+	index: function (req,res,next) {
+        res.send('hola mundo');
+        var config=require('.././database/config');
+        var db= new postgre.Client(config);
+        db.connect();
+        db.query('SELECT * FROM usuario')
+    .then(response => {
         console.log(response.rows);
         db.end();
-      })
-      .catch(err => {
+    })
+    .catch(err => {
         console.log(err);
         db.end();
-      })
-    //res.render('home.html');//,{
-    //	isAuthenticated : req.isAuthenticated(),
-    //	user : req.user
-    //});
-  },
-
-  pruebaInsertar: function(req, res, next) {
-    res.send('creando un nuevo usuario');
-    const postgre = require('pg');
-    var config = require('../database/config');
-    var db = new postgre.Client(config);
-    db.connect();
-
-    const text = 'INSERT INTO Usuario(correo,nombre,apellido,contrasenha,fechaNacimiento) VALUES($1,$2,$3,$4,$5) RETURNING *';
-    const values = ['marylicious@gmail.com', 'maria veronica', 'ortiz algomas', '5lL*649718', '2018-1-1'];
-
-    db.query(text, values, (err, res) => {
-      if (err) {
-        console.log(err.stack());
-      } else
-        console.log(res.rows[0]);
-
-      db.end();
-    });
-  }
+    })
+		//res.render('home.html');//,{
+		//	isAuthenticated : req.isAuthenticated(),
+		//	user : req.user
+		//});
+    }
+    
+  
 }

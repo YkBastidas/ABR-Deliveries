@@ -1,13 +1,16 @@
 import React from "react";
 
-const DateForm = props => {
+const Number = props => {
   //console.log(props.value);
   return (
     <div className="form-group">
       <div className="input-group">
-        <label htmlFor={props.name} className="sr-only">
+        <label htmlFor={props.name} className= "sr-only">
           {props.title}
         </label>
+        <span className="input-group-text" id="basic-addon3">
+          {props.title}
+        </span>
         <input
           className="form-control"
           id={props.name}
@@ -15,6 +18,7 @@ const DateForm = props => {
           type={props.inputtype}
           min={props.min}
           max={props.max}
+          step={props.step}
           value={props.value}
           onChange={props.handlerChange}
           required
@@ -25,4 +29,4 @@ const DateForm = props => {
   );
 };
 
-export default DateForm;
+export default Number;
