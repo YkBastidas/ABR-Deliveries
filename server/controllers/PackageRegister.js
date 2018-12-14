@@ -4,15 +4,9 @@ var packagesNum
 
 module.exports = {
 
-  /*getSignUp : function (req,res,next) {
-  	return res.render('users/signup');
-  },*/
-
   postRegisterPackage: function(req, res, next) {
     console.log(req.body);
     console.log(req);
- /*   var salt = bcrypt.genSaltSync(10);
-    var password = bcrypt.hashSync(req.body.passwordSignUp, salt); */
 
     var config = require('../database/config');
     var db = new postgre.Client(config);

@@ -18,6 +18,7 @@ module.exports = {
 
     var idUsuario=req.body.id;
     var valido=0;
+    var arregloEntregas=[];
 
     var textBusqueda = 'SELECT id_entrega FROM entrega WHERE id=idUsuario return id_entrega RETURNING *';
 
@@ -26,33 +27,35 @@ module.exports = {
         console.log(err.stack());
       }
       else{
-        var entregaBuscada=res.row[0];
-        var idEntrega=res.row[0].id_entrega;
-        valido=1;
-
-      }
-    });
-
-    textBusquedaPaquetes='SELECT * from paquetes WHERE id_entrega=idEntrega RETURNING *'
-    var arregloPaquetes;
-    if(valido){
-
-      db.query(textBusquedaPaquetes,(err, res) => {
-      if (err) {
-        console.log(err.stack());
-      }
-      else{
         for(let i in res){
-          arregloPaquetes.push(res.row(i));
+
+         //ARREGLA EL FORMATO DEL DATA TYPE PARA QUE SEA FORMATO DE JSON
+          var arregloDireccionSalida=res.row(i).direccion_recogida;
+          arregloDireccionSalida=arregloDireccionSalida.substring(4,arregloDireccionSalida.length-1);
+          arregloDireccionSalida=arregloDireccionSalida.split(',');
+          for(let i in arregloDireccionSalida){
+            arregloDireccionSalida[i]=arregloDireccionSalida[i].substring(1,arregloDireccionSalida[i].length-1);
+          }
+
+          var arregloDireccionSalida=res.row(i).direccion_entrega;
+          arregloDireccionLlegada=arregloDireccionLlegada.substring(4,arregloDireccionLlegada.length-1);
+          arregloDireccionLlegada=arregloDireccionLlegada.split(',');
+          for(let i in arregloDireccionLlegada){
+            arregloDireccionLlegada[i]=arregloDireccionLlegada[i].substring(1,arregloDireccionLlegada[i].length-1);
+          }
+
+          var creacionJSON={"id_entrega":res.row(i).id_entrega,"nombre_remitente":res.row(i).nombre_remitente,"apellido_remitente":res.row(i).apellido_remitente,"direccion_recogida":{"linea1":arregloDireccionSalida[0],"linea2":arregloDireccionSalida[1],"codigo_postal":arregloDireccionSalida[2],"ciudad":arregloDireccionSalida[3],"pais":arregloDireccionSalida[4]},"direccion_entrega":{"linea1":arregloDireccionLlegada[0],"linea2":arregloDireccionLlegada[1],"codigo_postal":arregloDireccionLlegada[2],"ciudad":arregloDireccionLlegada[3],"pais":arregloDireccionLlegada[4]}};
+          arregloEntregas.push(creacionJSON);
+
         }
       }
+      var todo={"entrega":arregloEntregas};
+
+
     });
 
-     //////////// HACER EL RETURN DEL ARREGLO
-
-    }
-
-
+      res=todo;
+      db.end();
   },
 
   getPackagesJSON   
