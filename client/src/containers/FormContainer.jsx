@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './FormContainer.css';
+import { Switch, Route, withRouter} from 'react-router-dom';
 
 /* Import Components */
 import Input from '../components/Input';
 import Button from '../components/Button';
 import DateForm from '../components/DateForm';
-import { connect } from 'net';
+
 
 function calculateAge(date) {
 
@@ -200,6 +201,9 @@ class FormContainer extends Component {
     this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
     this.handleClearForm = this.handleClearForm.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.props = this.props.bind(this);
+  
+    
 
     this.state = {
       signUpVisible: false
@@ -274,14 +278,26 @@ class FormContainer extends Component {
       axios.post('/auth/signin', {
          username: userData.emailSignIn,
          password: userData.passwordSignIn
-      }
-        ).then(response => {
-        response.json().then(data => {
-          console.log("Successful" + data);
-        }).catch(response => {
-          //handle error
-          console.log(response);
-        });
+      }).then(function (response) {
+        // handle success
+        
+        
+        if (response===false){
+          console.log('no existe usuario');
+        } else {
+          console.log(response.data);
+          console.log(this.state);
+          this.props.history.push('/perfil');
+          return response.data;
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+        alert('No se pudo iniciar sesion');
+      })
+      .then(function () {
+        // always executed
       });
     } else {
       console.log("Not Validated");
@@ -311,5 +327,4 @@ class FormContainer extends Component {
     </div>)
   }
 }
-
-export default FormContainer;
+export default withRouter(FormContainer);

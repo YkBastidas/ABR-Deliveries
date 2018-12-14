@@ -15,12 +15,16 @@ const router = require('./routes/routes.js'); // conecta las rutas
 
 const app = express();
 
+
+
+
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(path.join(publicPath))); //une server y cliente
 app.use(bodyParser.json()); 
 app.use(morgan('dev')); 
 app.use(cookieParser()); 
-//app.use(cors()); 
+
+//app.use(cors());
 app.use(helmet()); 
 //app.use(compression());
 
@@ -30,15 +34,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport.js')(passport);
 
-app.get('/', function (req, res) {
-  res.send('probando')
-})
 
-// Usa las rutas
+//Usa las rutas
 app.use('/', router);
 
 //mandar todo get a front para react router 
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
