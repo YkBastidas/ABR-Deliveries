@@ -2,19 +2,26 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import axios from 'axios';
 import Menu from '../components/Menu'
+axios.defaults.withCredentials = true;
 
-class ProfileContainer extends Component {
+export default class ProfileContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userList: []
+      user: {nombre: 'foo', correo:'bar'}
     }
   }
   render() {
     return (
       <section className = "main row align-items-center" >
       <div className = "sideLeft col-xs-12 col-sm-10" >
-        {this.displayUsers()}
+      <div key={this.state.user.nombre}>  
+                <div>
+                  <div>Nombre: {this.state.user.nombre}</div>
+                  <div>Correo: {this.state.user.correo}</div>
+                </div>
+  
+        </div>
       </div>
        <div className = "sideRight col-xs-12 col-sm-2" >
       <Menu active = 'profile' />
@@ -24,55 +31,21 @@ class ProfileContainer extends Component {
   }
 
   componentDidMount() {
-    this.getAllUser();
-    
-    axios.defaults.withCredentials = true;
-    axios.get('/prueba',{withCredentials: true})
-  .then(function (response) {
+
+    axios.get('/user/info',{withCredentials: true
+    })
+  .then((res)=> {
     // handle success
-    console.log(response);
+    console.log('Callback Axios con Data del Usuario');
+    console.log(res.data);
+    this.setState({user: res.data})
+
   })
   .catch(function (error) {
     // handle error
+    console.log('axios');
     console.log(error);
   })
-  .then(function () {
-    // always executed
-  });
-  }
-  getAllUser(){
-    axios.get('https://jsonplaceholder.typicode.com/users')
-    .then((response)=>{
-      console.log(response.data);
-      this.setState({
-        userList:response.data
-      })
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });
-  }
-  displayUsers(){
-    return this.state.userList.map( user => {
-      return(
-        <div key={user.name}>
-          {
-            user.id === 1 ?
-                <div>
-                  <div>Nombre: {user.name}</div>
-                  <div>Correo: {user.email}</div>
-                </div>
-            :
-            ""
-          }
-        </div>
-        );
-    })
+  
   }
 }
-
-export default ProfileContainer

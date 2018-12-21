@@ -27,7 +27,7 @@ module.exports = function (passport) {
                 else {
                     if (res.rows.length>0){
                         var user = res.rows[0];
-                            console.log('salio de sesion-->', user);
+                            console.log('se deserializo-->', user);
                             return donepass (null,user);   
                     } 
                     donepass(null,user);

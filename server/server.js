@@ -6,40 +6,41 @@ const path = require('path'); //une fragmentos de url
 const passport = require('passport'); //permite gestionar sesiones del usuario
 const morgan = require('morgan'); //loggea las request en la consola (para debuggear)
 const cookieParser = require('cookie-parser'); //permite leer las cookies
-const cookieSession = require('cookie-session');
 const cors = require('cors');
+const cookieSession = require('cookie-session');
+var corsOptions = {
+  origin: 'localhost:3000',
+  credentials : true
+ }
+
 const helmet = require('helmet'); //escribe los headers de las requests
 const publicPath = path.join(__dirname, '..', 'client', 'build');
 const PORT = process.env.PORT || 8000; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
-const origin = "http://localhost:3000";
+
 
 const app = express();
 
-
-
+app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']) 
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(path.join(publicPath))); //une server y cliente
 app.use(bodyParser.json()); 
 app.use(morgan('dev')); 
 app.use(cookieParser()); 
-
-app.use(cors({
-  credentials: true,
-  origin
-}));
+app.use(cors(corsOptions));
 app.use(helmet()); 
 
 
 app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000,
-  keys: 'keyboard cat'
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport.js')(passport);
-
 
 //Usa las rutas
 app.use('/', router);

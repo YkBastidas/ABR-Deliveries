@@ -9,9 +9,11 @@ var AuthMiddleware = require('.././middleware/auth');
 router.get('/auth/logout',controllers.UserController.logout);
 router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
 router.get('/hola', controllers.HomeController.index); //funcion de prueba
-router.get('/prueba', function (req, res) {
-	console.log(req.cookies);
-  res.send(req.cookies);
+router.get('/user/info', function (req, res) {
+console.log('Las cookies son -->', req.cookies);
+console.log('El user es  -->', req.user);
+
+  res.send(req.user);
 })
 
 
