@@ -6,21 +6,28 @@ var AuthMiddleware = require('.././middleware/auth');
 
 
 // "GET" requests
-router.get('/auth/logout',controllers.UserController.logout);
-router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
-router.get('/hola', controllers.HomeController.index); //funcion de prueba
+
+//router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
+//router.get('/hola', controllers.HomeController.index); //funcion de prueba
+
+//USUARIO
+
+//Obtener informacion del usuario
 router.get('/user/info', function (req, res) {
 console.log('Las cookies son -->', req.cookies);
 console.log('El user es  -->', req.user);
-
-  res.send(req.user);
+res.send(req.user);
 })
 
 
-//"POST" request
-router.post('/auth/signup',controllers.UserController.postSignUp);//registrar
 
 
+//AUTENTICACION
+
+//registrarse
+router.post('/auth/signup',controllers.UserController.postSignUp);
+
+//iniciar sesion
 router.post('/auth/signin', function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
 		console.log('Dentro de passport.authenticate() callback');
@@ -36,8 +43,9 @@ router.post('/auth/signin', function(req, res, next) {
 		return res.send('login exitoso');
 	  });
 	})(req, res, next);
-  });
-
-
+	});
+	
+	//cerrar sesion
+	router.get('/auth/logout',controllers.UserController.logout);
 
 module.exports = router;

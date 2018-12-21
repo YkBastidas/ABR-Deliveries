@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+//import {BrowserRouter as Router, Route} from "react-router-dom";
 import axios from 'axios';
 import Menu from '../components/Menu'
 axios.defaults.withCredentials = true;
@@ -8,7 +8,7 @@ export default class ProfileContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {nombre: 'foo', correo:'bar'}
+      user: {nombre: '', correo:''}
     }
   }
   render() {

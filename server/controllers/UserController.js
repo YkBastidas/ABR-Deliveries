@@ -3,9 +3,9 @@ var bcrypt = require('bcryptjs');
 
 module.exports = {
 
-  redirecProfile: function(req, res, next) {
+  /*redirecProfile: function(req, res, next) {
     return res.redirect('/perfil');
-  },
+  },*/
 
   postSignUp: function(req, res, next) {
     console.log(req.body);
@@ -34,8 +34,9 @@ module.exports = {
 
   logout: function(req, res, next) {
     req.logout();
+    req.session = null;
     console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
-    res.redirect('/');
+    //res.redirect('/');
   },
 
 
