@@ -13,7 +13,7 @@ var AuthMiddleware = require('.././middleware/auth');
 //USUARIO
 
 //Obtener informacion del usuario
-router.get('/user/info', function (req, res) {
+router.get('/user/info',AuthMiddleware.isLogged, function (req, res) {
 console.log('Las cookies son -->', req.cookies);
 console.log('El user es  -->', req.user);
 res.send(req.user);
@@ -46,6 +46,6 @@ router.post('/auth/signin', function(req, res, next) {
 	});
 	
 	//cerrar sesion
-	router.get('/auth/logout',controllers.UserController.logout);
+	router.get('/auth/logout', AuthMiddleware.isLogged, controllers.UserController.logout);
 
 module.exports = router;

@@ -6,7 +6,7 @@ module.exports = function (passport) {
 	
 	passport.serializeUser(function(user,done) {
         console.log('serializeUser callback. User id se guarda en cookie session aqui')
-        console.log (`id del user dentro del serialize {$user.id}`)
+        console.log (`id del user dentro del serialize ${user.id}`)
 		done(null,user.id);
 	});
 
@@ -30,7 +30,7 @@ module.exports = function (passport) {
                             console.log('se deserializo-->', user);
                             return donepass (null,user);   
                     } 
-                    donepass(null,user);
+                
                 }
                 donepass(null,false);
                 done();
@@ -73,8 +73,14 @@ module.exports = function (passport) {
 
                         console.log(user);
                         return donepass (null,user);
+                    }else{
+                        console.log('contrasena invalida');
+                        return donepass(null,null);
                     }
 
+                }else {
+                    console.log('usuario no valido');
+                    return donepass(null,null);
                 }
                 done(); 
                

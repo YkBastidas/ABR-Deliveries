@@ -35,8 +35,7 @@ module.exports = {
   logout: function(req, res, next) {
     req.logout();
     req.session = null;
-    console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
-    //res.redirect('/');
+    res.send('Sesion finalizada en server')
   },
 
 

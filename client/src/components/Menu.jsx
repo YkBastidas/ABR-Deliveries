@@ -12,12 +12,14 @@ class Menu extends Component {
   }
   
   logOut () {
-    console.log('logging out')
+    console.log('Cerrando sesion')
     axios.get('/auth/logout',{withCredentials: true
     })
   .then((res)=> {
     // handle success
-    this.props.history.push('/perfil');
+   // this.props.history.push('/perfil');
+   console.log('Sesion cerrada');
+   this.props.isLoggedIn();
 
   })
   .catch(function (error) {
