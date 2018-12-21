@@ -25,6 +25,20 @@ class ProfileContainer extends Component {
 
   componentDidMount() {
     this.getAllUser();
+    
+    axios.defaults.withCredentials = true;
+    axios.get('/prueba',{withCredentials: true})
+  .then(function (response) {
+    // handle success
+    console.log(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+  });
   }
   getAllUser(){
     axios.get('https://jsonplaceholder.typicode.com/users')

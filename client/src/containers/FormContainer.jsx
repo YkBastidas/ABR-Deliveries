@@ -347,10 +347,10 @@ class FormContainer extends Component {
 
         if (response===false){
           console.log('no existe usuario');
+          alert('No existe usuario');
         } else {
           console.log(response.data);
           this.props.history.push('/perfil');
-          return response.data;
         }
       })
       .catch(function (error) {
