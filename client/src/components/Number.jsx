@@ -20,7 +20,7 @@ const Number = props => {
           max={props.max}
           step={props.step}
           value={props.value}
-          onChange={props.handlerChange}
+          onChange={props.handlerchange}
           required
           {...props}
         />

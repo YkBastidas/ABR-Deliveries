@@ -19,6 +19,10 @@ class PackagesContainer extends Component {
         altura: "",
         ancho: "",
         descripcion: "",
+      },
+      directions: {
+        salida: this.props.salida,
+        llegada: this.props.llegada
       }
     };
 
@@ -54,7 +58,7 @@ class PackagesContainer extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let packageData = this.state.newPackage;
+    let packageData = this.state;
       axios({
         method: "POST",
         url: '/entregas/guardar',
@@ -93,19 +97,19 @@ class PackagesContainer extends Component {
           <form onSubmit={this.handleSubmit} className="needs-validation" id="formPackages">
 
             <div className="form-group">
-              <Number title={"Peso (Kg):"} name={"peso"} inputtype={"number"} min= {"0.01"} max= {"999,99"} step = {".01"} value={this.state.newPackage.peso} handlerChange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
+              <Number title={"Peso (Kg):"} name={"peso"} inputtype={"number"} min= {"0.01"} max= {"999,99"} step = {".01"} value={this.state.newPackage.peso} handlerchange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
             </div>
 
             <div className="form-group">
-              <Number title={"Altura (cm):"} name={"altura"} inputtype={"number"} min= {"0.01"} max= {"999.99"} step = {".01"} value={this.state.newPackage.altura} handlerChange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
+              <Number title={"Altura (cm):"} name={"altura"} inputtype={"number"} min= {"0.01"} max= {"999.99"} step = {".01"} value={this.state.newPackage.altura} handlerchange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
             </div>
 
             <div className="form-group">
-              <Number title={"Ancho (cm):"} name={"ancho"} inputtype={"number"} min= {"0.01"} max= {"999.99"} step = {".01"} value={this.state.newPackage.ancho} handlerChange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
+              <Number title={"Ancho (cm):"} name={"ancho"} inputtype={"number"} min= {"0.01"} max= {"999.99"} step = {".01"} value={this.state.newPackage.ancho} handlerchange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
             </div>
 
             <div className="form-group">
-              <TextArea title={"Descripción"} name={"description"} form={"formPackages"} value={this.state.newPackage.descripcion} handlerChange={this.handleTextArea} placeholder={"Ingresa la descripcion"}/>{" "}
+              <TextArea title={"Descripción"} name={"description"} form={"formPackages"} value={this.state.newPackage.descripcion} handlerchange={this.handleTextArea} placeholder={"Ingresa la descripcion"}/>{" "}
             </div>
 
             {/*this.props.handleSubmit*/}
@@ -131,7 +135,6 @@ class PackagesContainer extends Component {
             />
             <Link to ="/entregas">
               <Button
-                action={""}
                 type={"danger"}
                 title={"Regresar"}
                 buttonStyle={
