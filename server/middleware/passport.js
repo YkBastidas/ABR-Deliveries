@@ -5,6 +5,8 @@ var bcrypt = require('bcryptjs');
 module.exports = function (passport) {
 	
 	passport.serializeUser(function(user,done) {
+        console.log('serializeUser callback. User id se guarda en cookie session aqui')
+        console.log (`id del user dentro del serialize ${user.id}`)
 		done(null,user.id);
 	});
 
@@ -25,10 +27,10 @@ module.exports = function (passport) {
                 else {
                     if (res.rows.length>0){
                         var user = res.rows[0];
-                            console.log('salio de sesion-->', user);
+                            console.log('se deserializo-->', user);
                             return donepass (null,user);   
                     } 
-                    donepass(null,user);
+                
                 }
                 donepass(null,false);
                 done();
@@ -52,6 +54,7 @@ module.exports = function (passport) {
             process.exit(-1)
         })
 
+        console.log('Estoy en localstrategy');
         console.log('username', username);
         console.log('password', password);
 
@@ -70,10 +73,14 @@ module.exports = function (passport) {
 
                         console.log(user);
                         return donepass (null,user);
-                    }else {
-                        return donepass(null,false);
+                    }else{
+                        console.log('contrasena invalida');
+                        return donepass(null,null);
                     }
-    
+
+                }else {
+                    console.log('usuario no valido');
+                    return donepass(null,null);
                 }
                 done(); 
                

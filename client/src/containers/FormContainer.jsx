@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import './FormContainer.css';
-import {Switch, Route, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 /* Import Components */
 import Input from '../components/Input';
@@ -313,13 +313,12 @@ class FormContainer extends Component {
         nombre: userData.name,
         apellido: userData.lastNames,
         contrasenha: userData.password,
-        fecha_nacimiento:userData.bornDate,
-        id_entrega: null
+        fecha_nacimiento:userData.bornDate
 
       }).then( (response)=> {
         // handle success
-        //
-        if (response===false){
+        console.log(response);
+        if (!response.data){
           console.log('ya existe el usuario');
         } else {
           console.log(response.data);
@@ -344,13 +343,13 @@ class FormContainer extends Component {
       }).then( (response)=> {
         // handle success
 
-
-        if (response===false){
+        console.log(response);
+        if (!response.data){
           console.log('no existe usuario');
+          alert('No se pudo iniciar sesion, credenciales invalidas');
         } else {
           console.log(response.data);
           this.props.history.push('/perfil');
-          return response.data;
         }
       })
       .catch(function (error) {

@@ -15,7 +15,9 @@ class Packages extends Component {
       </header>
       <br/>
       <div className="container">
-        <PackagesContainer/>
+        {console.log('props form link',this.props.location.param1)}
+        {console.log('props form link',this.props.location.param2)}
+        <PackagesContainer salida={this.props.location.param1} llegada={this.props.location.param2}/>
       </div>
       <br/>
       <div className="container-fluid">

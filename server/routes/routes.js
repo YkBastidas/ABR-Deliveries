@@ -6,27 +6,46 @@ var AuthMiddleware = require('.././middleware/auth');
 
 
 // "GET" requests
-router.get('/auth/logout',controllers.UserController.logout);
-router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
-router.get('/hola', controllers.HomeController.index); //funcion de prueba
 
+//router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
+//router.get('/hola', controllers.HomeController.index); //funcion de prueba
 
-//"POST" request
-router.post('/auth/signup',controllers.UserController.postSignUp);//registrar
+//USUARIO
 
+//Obtener informacion del usuario
+router.get('/user/info',AuthMiddleware.isLogged, function (req, res) {
+console.log('Las cookies son -->', req.cookies);
+console.log('El user es  -->', req.user);
+res.send(req.user);
+})
 
+//Registrar entrega+paquete
+router.post('/entregas/guardar',controllers.PackageController.postPackageRegister);
+
+//AUTENTICACION
+
+//registrarse
+router.post('/auth/signup',controllers.UserController.postSignUp);
+
+//iniciar sesion
 router.post('/auth/signin', function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
-	  if (err) { return next(err); }
-	  if (!user) { console.log('no usuario'); return res.send(false); }
+		console.log('Dentro de passport.authenticate() callback');
+    console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+		if (err) { return next(err); }
+	  if (!user || user === false) { console.log('no usuario'); return res.send(false); }
 	  req.logIn(user, function(err) {
 		if (err) { return next(err); }
+		console.log('Dentro del req.login() callback')
 		console.log('User', user);
-		return res.send(user);
+		console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+    console.log(`req.user: ${JSON.stringify(req.user)}`)
+		return res.send('login exitoso');
 	  });
 	})(req, res, next);
-  });
+	});
 
-
+	//cerrar sesion
+	router.get('/auth/logout', AuthMiddleware.isLogged, controllers.UserController.logout);
 
 module.exports = router;

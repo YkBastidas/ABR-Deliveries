@@ -2,44 +2,54 @@
 
 const express = require('express'); // framework de node para gestionar rutas/servidor
 const bodyParser = require('body-parser'); // permite leer la data de las forms en req.body
-var session = require("express-session");
 const path = require('path'); //une fragmentos de url
 const passport = require('passport'); //permite gestionar sesiones del usuario
 const morgan = require('morgan'); //loggea las request en la consola (para debuggear)
 const cookieParser = require('cookie-parser'); //permite leer las cookies
-//const cors = require('cors'); //Permite el cors
+const cors = require('cors');
+const cookieSession = require('cookie-session');
+var corsOptions = {
+  origin: 'localhost:3000',
+  credentials : true
+ }
+
 const helmet = require('helmet'); //escribe los headers de las requests
-//const compression = require('compression');
 const publicPath = path.join(__dirname, '..', 'client', 'build');
 const PORT = process.env.PORT || 8000; // numero del puerto a escuchar
 const router = require('./routes/routes.js'); // conecta las rutas
 
+
 const app = express();
 
-
-
+app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']) 
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(path.join(publicPath))); //une server y cliente
 app.use(bodyParser.json()); 
 app.use(morgan('dev')); 
 app.use(cookieParser()); 
-
-//app.use(cors());
+app.use(cors(corsOptions));
 app.use(helmet()); 
-//app.use(compression());
 
-app.use(session({ secret: "cats" }));
+
+app.use(cookieSession({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport.js')(passport);
-
 
 //Usa las rutas
 app.use('/', router);
 
 //mandar todo get a front para react router 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
+  console.log(req.sessionID)
+  console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+  console.log(`req.user: ${JSON.stringify(req.user)}`)
   res.sendFile(path.join(publicPath, '../client/build/index.html'));
 });
 

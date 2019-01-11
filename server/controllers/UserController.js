@@ -3,9 +3,9 @@ var bcrypt = require('bcryptjs');
 
 module.exports = {
 
-  redirecProfile: function(req, res, next) {
+  /*redirecProfile: function(req, res, next) {
     return res.redirect('/perfil');
-  },
+  },*/
 
   postSignUp: function(req, res, next) {
     console.log(req.body);
@@ -16,8 +16,8 @@ module.exports = {
     var db = new postgre.Client(config);
     db.connect();
 
-    const text = 'INSERT INTO usuario(correo,nombre,apellido,contrasenha,fecha_nacimiento,id_entrega) VALUES($1,$2,$3,$4,$5,$6) RETURNING *';
-    const values = [req.body.correo, req.body.nombre, req.body.apellido, contrasenha, req.body.fecha_nacimiento, req.body.id_entrega];
+    const text = 'INSERT INTO usuario(correo,nombre,apellido,contrasenha,fecha_nacimiento) VALUES($1,$2,$3,$4,$5) RETURNING *';
+    const values = [req.body.correo, req.body.nombre, req.body.apellido, contrasenha, req.body.fecha_nacimiento];
     db.query(text, values, (err, res) => {
       if (err) {
         console.log(err.stack);
@@ -34,7 +34,8 @@ module.exports = {
 
   logout: function(req, res, next) {
     req.logout();
-    res.redirect('/');
+    req.session = null;
+    res.send('Sesion finalizada en server')
   },
 
 

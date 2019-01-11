@@ -14,7 +14,7 @@ const TextArea = props => {
           id={props.name}
           name={props.name}
           value={props.value}
-          onChange={props.handlerChange}
+          onChange={props.handlerchange}
           placeholder={props.placeholder}
           required
           {...props}

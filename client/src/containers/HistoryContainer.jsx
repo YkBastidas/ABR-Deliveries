@@ -26,29 +26,41 @@ class HistoryContainer extends Component {
 
     mapquest.key = 'xuikGnFkecGmfa6wyQ2wkE5n0OGBCnAz';
     mapquest.open = false;
+    mapquest.geocoding().geocode(['10.417586, -66.818848', '10.343291, -66.991196', '10.409482, -66.488571'], createMap);
 
-    var map = mapquest.map('map', {
-      center: [
-        10.463251, -66.975403
-      ],
-      layers: mapquest.tileLayer('map'),
-      zoom: 5,
-      zoomControl: false
-    });
+    function createMap(error, response) {
+          // Initialize the Map
+          var map = mapquest.map('map', {
+            layers: mapquest.tileLayer('map'),
+            center: [10.463251, -66.975403],
+            zoom: 5,
+            zoomControl: false
+          });
 
-    map.addControl(mapquest.control());
+          // Generate the feature group containing markers from the geocoded locations
+          var featureGroup = generateMarkersFeatureGroup(response);
 
-    const getHistory = async () => {
-      try {
-        const marks = await axios.get('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson')
-        console.log(marks.data);
-        window.L.geoJSON(marks.data).addTo(map);
-
-      } catch (error) {
-        console.error(error)
-      }
+          // Add markers to the map and zoom to the features
+          featureGroup.addTo(map);
+          map.fitBounds(featureGroup.getBounds());
+          map.addControl(mapquest.control());
     }
-    getHistory();
+
+    function generateMarkersFeatureGroup(response) {
+          var group = [];
+          for (var i = 0; i < response.results.length; i++) {
+            var location = response.results[i].locations[0];
+            var locationLatLng = location.latLng;
+
+            // Create a marker for each location
+            var marker = window.L.marker(locationLatLng, {icon: mapquest.icons.marker()})
+              .bindPopup(location.adminArea5 + ', ' + location.adminArea3);
+
+            group.push(marker);
+          }
+          return window.L.featureGroup(group);
+        }
+
   }
 
 }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import axios from 'axios';
 
 class Menu extends Component {
   constructor(props) {
@@ -7,6 +8,26 @@ class Menu extends Component {
     this.state = {
       active: props.active
     }
+    this.logOut=this.logOut.bind(this);
+  }
+
+  logOut () {
+    console.log('Cerrando sesion')
+    axios.get('/auth/logout',{withCredentials: true
+    })
+  .then((res)=> {
+    // handle success
+   // this.props.history.push('/perfil');
+   console.log('Sesion cerrada');
+   this.props.isLoggedIn();
+
+  })
+  .catch(function (error) {
+    // handle error
+    console.log('axios');
+    console.log(error);
+  })
+
   }
   render() {
     return (<nav>
@@ -35,9 +56,16 @@ class Menu extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/">
+
+        <Link className={
+            this.state.active === "eliminar" ? "nav-link active" : "nav-link"
+          } to="/eliminar/">
+          Eliminar Entrega
+        </Link>
+
+        <Link className="nav-link" to="/" onClick={()=> this.logOut()}>
             Cerrar Sesión
-          </Link>
+        </Link>
         </li>
       </ul>
     </nav>)
