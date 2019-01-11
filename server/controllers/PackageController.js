@@ -84,13 +84,13 @@ module.exports = {
           res.send(null);
         }
   } ,
-  eliminarEntregas function(req,res,next){
+  deleteEntregas function(req,res,next){
     var exitoso=0;
     var config = require('../database/config');
         var db = new postgre.Client(config);
         db.connect();
 
-    var textEntrega = 'DELETE * FROM entrega WHERE id_entrega=VALUES($1)';
+    var textEntrega = 'DELETE * FROM entrega WHERE id_entrega=values($1)';
         var values = [req.body.id_entrega];
 
      db.query(textEntrega, values, (err, res) => {
@@ -102,7 +102,7 @@ module.exports = {
            }
         }); //FIN DEL QUERY   
 
-     var textPaquete = 'DELETE * FROM paquete WHERE id_entrega=VALUES($1)';
+     var textPaquete = 'DELETE * FROM paquete WHERE id_entrega=values($1)';
         var values = [req.body.id_entrega];
 
      db.query(textEntrega, values, (err, res) => {

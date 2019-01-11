@@ -11,7 +11,7 @@ router.post('/auth/inicio',passport.authenticate('local',{
 }));
 
 
-router.post('/pruebaPaquete', UserControllers.david);
+router.post('/entregas/guardar', controllers.PackageController.postPackageRegister);
 
 
 
