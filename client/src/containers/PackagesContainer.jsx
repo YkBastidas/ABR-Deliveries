@@ -6,7 +6,7 @@ import axios from 'axios';
 import Number from '../components/Number';
 import Button from '../components/Button';
 import TextArea from '../components/TextArea';
-
+import Input from '../components/Input';
 import './FormContainer.css';
 
 class PackagesContainer extends Component {
@@ -21,6 +21,8 @@ class PackagesContainer extends Component {
         descripcion: "",
       },
       directions: {
+        name: "",
+        lastNames: "",
         salida: this.props.salida,
         llegada: this.props.llegada
       }
@@ -28,6 +30,7 @@ class PackagesContainer extends Component {
 
     this.handleTextArea = this.handleTextArea.bind(this);
     this.handleNumber = this.handleNumber.bind(this);
+    this.handleNames = this.handleNames.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClearForm = this.handleClearForm.bind(this);
@@ -54,6 +57,17 @@ class PackagesContainer extends Component {
         [name]: value
       }
     }), () => console.log(this.state.newPackage));
+  }
+
+  handleNames(e){
+    let value = e.target.value;
+    let name =e.target.name;
+    this.setState(prevState => ({
+      directions: {
+        ...prevState.directions,
+        [name]: value
+      }
+    }), () => console.log(this.state.directions));
   }
 
   handleSubmit(e) {
@@ -85,8 +99,14 @@ class PackagesContainer extends Component {
         altura: "",
         ancho: "",
         descripcion: ""
+      },
+      directions: {
+        name: "",
+        lastNames: "",
+        salida: this.props.salida,
+        llegada: this.props.llegada
       }
-    }, () => console.log(this.state.newPackage));
+    }, () => console.log(this.state));
   }
 
   render() {
@@ -95,6 +115,14 @@ class PackagesContainer extends Component {
         <div className = "sideLeft col-sm-12" >
           <h2> Datos del Paquete</h2>
           <form onSubmit={this.handleSubmit} className="needs-validation" id="formPackages">
+
+            <div className="form-group">
+              <Input title={"Nombre del Destinatario"} name={"name"} inputtype={"text"} value={this.state.directions.name} handlerChange={this.handleNames} placeholder={"Ingresa el nombre del destinatario"}/>{" "}
+            </div>
+
+            <div className="form-group">
+              <Input title={"Apellido del Destinatario"} name={"lastNames"} inputtype={"text"} value={this.state.directions.lastNames} handlerChange={this.handleNames} placeholder={"Ingresa el apellido del destinatario"}/>{" "}
+            </div>
 
             <div className="form-group">
               <Number title={"Peso (Kg):"} name={"peso"} inputtype={"number"} min= {"0.01"} max= {"999,99"} step = {".01"} value={this.state.newPackage.peso} handlerchange={this.handleNumber} placeholder={"0.01 ~ 999.99"}/>{" "}
@@ -114,7 +142,6 @@ class PackagesContainer extends Component {
 
             {/*this.props.handleSubmit*/}
             <Button
-              action={console.log(this.state.newPackage)}
               type={"primary"}
               title={"Guardar Paquete"}
               buttonStyle={

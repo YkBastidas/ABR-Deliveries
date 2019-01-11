@@ -10,7 +10,7 @@ class Menu extends Component {
     }
     this.logOut=this.logOut.bind(this);
   }
-  
+
   logOut () {
     console.log('Cerrando sesion')
     axios.get('/auth/logout',{withCredentials: true
@@ -27,7 +27,7 @@ class Menu extends Component {
     console.log('axios');
     console.log(error);
   })
-  
+
   }
   render() {
     return (<nav>
@@ -56,7 +56,12 @@ class Menu extends Component {
           </Link>
         </li>
         <li className="nav-item">
-       
+
+        <Link className={
+            this.state.active === "eliminar" ? "nav-link active" : "nav-link"
+          } to="/eliminar/">
+          Eliminar Entrega
+        </Link>
 
         <Link className="nav-link" to="/" onClick={()=> this.logOut()}>
             Cerrar Sesión

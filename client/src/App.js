@@ -7,6 +7,7 @@ import Profile from './pages/Profile'
 import Delivery from './pages/Delivery'
 import History from './pages/History'
 import Packages from './pages/Packages'
+import Eliminate from './pages/Eliminate'
 
 class App extends Component {
 
@@ -19,6 +20,7 @@ class App extends Component {
           <Route path="/entregas/" component={Delivery}/>
           <Route path="/historial/" component={History}/>
           <Route path="/paquetes/" component={Packages}/>
+          <Route path="/eliminar/" component={Eliminate}/>
         </div>
         </Router>
     );
