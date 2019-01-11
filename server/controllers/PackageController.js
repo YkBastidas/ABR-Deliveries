@@ -28,8 +28,8 @@ module.exports = {
            }
            console.log(res.rows[0].id_entrega);
            return res.rows[0].id_entrega;           
-        }); //FIN DEL QUERY
-          console.log(id_entrega);
+        }).then(console.log(id_entrega)); //FIN DEL QUERY
+          //console.log(id_entrega);
           var textPaquetes = 'INSERT INTO paquete (id_entrega,peso,altura,ancho,descripcion) VALUES($1,$2,$3,$4,$5) RETURNING *';
           values =[id_entrega,peso,altura,ancho,descripcion];
           db.query(textPaquetes, values, (err, res) => {
