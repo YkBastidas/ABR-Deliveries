@@ -155,15 +155,17 @@ class DeliveryContainer extends Component {
     });
 
     function addMarker(e) {
-      popup.setLatLng(e.latlng).addTo(map).bindPopup(e.latlng.toString());
-      alert(e.latlng);
-      return e.latlng
+      var latLng = e.latlng.toString().substring(7,28);
+      popup.setLatLng(e.latlng).addTo(map).bindPopup(latLng);
+      alert(latLng);
+      return latLng
     }
 
     function addMarker2(e) {
-      popup2.setLatLng(e.latlng).addTo(map).bindPopup(e.latlng.toString());
-      alert(e.latlng);
-      return e.latlng
+      var latLng = e.latlng.toString().substring(7,28);
+      popup2.setLatLng(e.latlng).addTo(map).bindPopup(latLng);
+      alert(latLng);
+      return latLng
     }
   }
 

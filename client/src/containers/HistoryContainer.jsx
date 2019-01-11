@@ -26,7 +26,7 @@ class HistoryContainer extends Component {
 
     mapquest.key = 'xuikGnFkecGmfa6wyQ2wkE5n0OGBCnAz';
     mapquest.open = false;
-    mapquest.geocoding().geocode(['10.464519, -66.975050', '10.343291, -66.991196', '10.409482, -66.488571'], createMap);
+    mapquest.geocoding().geocode(['10.417586, -66.818848', '10.343291, -66.991196', '10.409482, -66.488571'], createMap);
 
     function createMap(error, response) {
           // Initialize the Map
