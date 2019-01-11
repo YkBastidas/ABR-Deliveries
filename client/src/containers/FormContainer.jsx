@@ -313,8 +313,7 @@ class FormContainer extends Component {
         nombre: userData.name,
         apellido: userData.lastNames,
         contrasenha: userData.password,
-        fecha_nacimiento:userData.bornDate,
-        id_entrega: null
+        fecha_nacimiento:userData.bornDate
 
       }).then( (response)=> {
         // handle success

@@ -16,8 +16,8 @@ module.exports = {
     var db = new postgre.Client(config);
     db.connect();
 
-    const text = 'INSERT INTO usuario(correo,nombre,apellido,contrasenha,fecha_nacimiento,id_entrega) VALUES($1,$2,$3,$4,$5,$6) RETURNING *';
-    const values = [req.body.correo, req.body.nombre, req.body.apellido, contrasenha, req.body.fecha_nacimiento, req.body.id_entrega];
+    const text = 'INSERT INTO usuario(correo,nombre,apellido,contrasenha,fecha_nacimiento) VALUES($1,$2,$3,$4,$5) RETURNING *';
+    const values = [req.body.correo, req.body.nombre, req.body.apellido, contrasenha, req.body.fecha_nacimiento];
     db.query(text, values, (err, res) => {
       if (err) {
         console.log(err.stack);
