@@ -19,8 +19,8 @@ console.log('El user es  -->', req.user);
 res.send(req.user);
 })
 
-
-
+//Registrar entrega+paquete
+router.post('/entregas/guardar',controllers.PackageController.postPackageRegister);
 
 //AUTENTICACION
 
@@ -44,7 +44,7 @@ router.post('/auth/signin', function(req, res, next) {
 	  });
 	})(req, res, next);
 	});
-	
+
 	//cerrar sesion
 	router.get('/auth/logout', AuthMiddleware.isLogged, controllers.UserController.logout);
 

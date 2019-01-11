@@ -72,25 +72,25 @@ class PackagesContainer extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let packageData = this.state;
-      axios({
-        method: "POST",
-        url: '/entregas/guardar',
-        body: JSON.stringify(packageData),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(response => {
-        response.json().then(data => {
-          console.log("Successful" + data);
-        }).catch(response => {
-          //handle error
-          console.log(response);
-        });
-      });
+    let packageData = this.state.newPackage;
+    let directionsData = this.state.directions;
+
+    axios.post('/entregas/guardar', {
+      peso: packageData.peso,
+      altura: packageData.altura,
+      ancho: packageData.ancho,
+      descripcion: packageData.descripcion,
+      name: directionsData.name,
+      lastNames: directionsData.lastNames,
+      salida: directionsData.salida,
+      llegada: directionsData.llegada
+    }).then( (response)=> {
+      // handle success
+      console.log(response);
+    });
     return true;
   }
+
   handleClearForm(e) {
     e.preventDefault();
     this.setState({
