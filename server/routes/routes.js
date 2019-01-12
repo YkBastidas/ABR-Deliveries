@@ -8,7 +8,7 @@ var AuthMiddleware = require('.././middleware/auth');
 // "GET" requests
 
 //router.get('/perfil', AuthMiddleware.isLogged ,controllers.UserController.redirecProfile);
-//router.get('/hola', controllers.HomeController.index); //funcion de prueba
+router.get('/hola', controllers.HomeController.index); //funcion de prueba
 
 //USUARIO
 
@@ -28,9 +28,8 @@ res.send(req.user);
 router.post('/auth/signup',controllers.UserController.postSignUp);
 
 //iniciar sesion
-router.post('/auth/signin', function(req, res, next) {
+/*router.post('/auth/signin', function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
-		console.log('Dentro de passport.authenticate() callback');
     console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
 		if (err) { return next(err); }
 	  if (!user || user === false) { console.log('no usuario'); return res.send(false); }
@@ -43,9 +42,10 @@ router.post('/auth/signin', function(req, res, next) {
 		return res.send('login exitoso');
 	  });
 	})(req, res, next);
-	});
+	});*/
 	
 	//cerrar sesion
+	router.post('/auth/signin',controllers.UserController.pruebaInicio);
 	router.get('/auth/logout', AuthMiddleware.isLogged, controllers.UserController.logout);
 
 module.exports = router;

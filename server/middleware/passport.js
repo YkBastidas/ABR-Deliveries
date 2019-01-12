@@ -2,11 +2,14 @@ var LocalStrategy = require('passport-local').Strategy;
 var postgre = require('pg');
 var bcrypt = require('bcryptjs');
 
+var guardadoEnBase={
+	'username':'alguien@hotmail.com',
+	'password':'$2a$10$WSDy1SbZ0e/52rVY2xphkO5VYZr1UNuDReNYdMWskINHEiXc8HP2m'
+}
+
 module.exports = function (passport) {
 	
 	passport.serializeUser(function(user,done) {
-        console.log('serializeUser callback. User id se guarda en cookie session aqui')
-        console.log (`id del user dentro del serialize ${user.id}`)
 		done(null,user.id);
 	});
 
@@ -54,11 +57,9 @@ module.exports = function (passport) {
             process.exit(-1)
         })
 
-        console.log('Estoy en localstrategy');
-        console.log('username', username);
-        console.log('password', password);
 
-        pool.connect((err, client, done) => {
+
+      /*  pool.connect((err, client, done) => {
             if (err) throw err
             client.query('SELECT * FROM usuario WHERE correo = $1',[username], (err, res) => {
            //  done()
@@ -70,25 +71,47 @@ module.exports = function (passport) {
                     var user = res.rows[0];
 
                     if (bcrypt.compareSync(password,user.contrasenha)){
-
-                        console.log(user);
+                        res.send(user);
                         return donepass (null,user);
                     }else{
+                        res.send({'password':'contra invalida'});
                         console.log('contrasena invalida');
                         return donepass(null,null);
                     }
 
                 }else {
+                    res.send({'correo':'correo invalido'});
                     console.log('usuario no valido');
                     return donepass(null,null);
                 }
                 done(); 
                
-              }
-            })
-          })
 
+
+              }
+            })*/
+	
+            if(username==guardadoEnBase.username){
+	         if (bcrypt.compareSync(password,guardadoEnBase.password)){
+                        return donepass (null,{'correo':guardadoEnBase.username});
+                    }else{
+                        return donepass(null,{'password':'contra invalida'});
+                    }
+          }
+          else{
+            return donepass(null,{'correo':'correo invalido'});
+          }
+
+          
+        
 		return;
 	}
 	));
+
+
+
+
 }
+
+
+
